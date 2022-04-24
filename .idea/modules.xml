@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/BackEnd/Amazone/Amazone.iml" filepath="$PROJECT_DIR$/BackEnd/Amazone/Amazone.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/amazone_server_style_student.iml" filepath="$PROJECT_DIR$/.idea/amazone_server_style_student.iml" />
     </modules>
   </component>
