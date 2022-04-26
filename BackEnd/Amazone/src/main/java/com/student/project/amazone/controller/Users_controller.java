@@ -16,6 +16,7 @@ import java.net.URI;
 @CrossOrigin(origins = "http://localhost:1212")
 public class Users_controller {
     private final Users_service service;
+
     @GetMapping
     public ResponseEntity<String> getUsers() {
         return ResponseEntity.ok().body("Login success");
@@ -26,8 +27,25 @@ public class Users_controller {
         if (service.isLoggedIn(user)) {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/login").toUriString());
             return ResponseEntity.created(uri).body(user);
-        }else{
+        } else {
             throw new IllegalStateException("Login fails");
         }
+    }
+
+    @PostMapping("save")
+    public ResponseEntity<Users_model> saveUser(@RequestBody Users_model user) {
+        service.saveUser(user);
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/save").toUriString());
+        return ResponseEntity.created(uri).body(user);
+    }
+
+    @PutMapping("update")
+    public ResponseEntity<Users_model> UpdateUser(@RequestBody Users_model user) {
+        if(service.findUserByName(user.getName()) != null){
+            service.saveUser(service.findUserByName(user.getName()));
+        }
+
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/save").toUriString());
+        return ResponseEntity.created(uri).body(user);
     }
 }
