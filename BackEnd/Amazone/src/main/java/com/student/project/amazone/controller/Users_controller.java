@@ -39,9 +39,10 @@ public class Users_controller {
         return ResponseEntity.created(uri).body(user);
     }
 
-    @PutMapping("update")
-    public ResponseEntity<Users_model> UpdateUser(@RequestBody Users_model user) {
-        if(service.findUserByName(user.getName()) != null){
+    @PutMapping("update/{id}")
+    public ResponseEntity<Users_model> UpdateUser(@PathVariable String id, @RequestBody Users_model user) {
+        if (service.findUserById(Long.valueOf(id)) != null) {
+            user.setId(Long.valueOf(id));
             service.saveUser(service.findUserByName(user.getName()));
         }
 
