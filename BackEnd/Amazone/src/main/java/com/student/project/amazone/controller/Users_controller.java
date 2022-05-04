@@ -13,7 +13,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1/user/")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:1212")
+@CrossOrigin(origins = "http://localhost:4200")
 public class Users_controller {
     private final Users_service service;
 
