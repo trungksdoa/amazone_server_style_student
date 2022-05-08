@@ -13,7 +13,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1/user/")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:1212")
+@CrossOrigin(origins = "http://localhost:4200")
 public class Users_controller {
     private final Users_service service;
 
@@ -42,7 +42,7 @@ public class Users_controller {
     @PutMapping("update/{id}")
     public ResponseEntity<Users_model> UpdateUser(@PathVariable String id, @RequestBody Users_model user) {
         if (service.findUserById(Long.valueOf(id)) != null) {
-            user.setId(Long.valueOf(id))
+            user.setId(Long.valueOf(id));
             service.saveUser(service.findUserByName(user.getName()));
         }
 

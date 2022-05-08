@@ -5,6 +5,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+import java.sql.Timestamp;
+
 import static javax.persistence.GenerationType.AUTO;
 
 @Entity
@@ -16,7 +18,11 @@ public class Product_model {
     @GeneratedValue(strategy = AUTO)
     private Long id;
     private String name;
+    private String imageurl;
     private Long price;
+    private Timestamp created_at;
+    private Timestamp updated_at;
+
     @ManyToOne
     @JoinColumn(name = "cata_product", insertable = false, updatable = false)
     private Catagory_model catagory;
