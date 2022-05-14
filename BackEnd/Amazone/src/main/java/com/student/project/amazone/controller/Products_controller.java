@@ -25,7 +25,7 @@ public class Products_controller {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("save")
+   @PostMapping("save")
     public ResponseEntity<Product_model> saveProduct(@RequestBody Product_model product_model) {
         return ResponseEntity.ok().body(service.saveProduct(product_model));
     }
