@@ -38,6 +38,7 @@ public class Cart_implement implements Cart_service {
             cartExist.getCartItem().stream().forEach(
                     data -> {
                         if (data.getProductItem().getId().equals(cartitem.getProductItem().getId())) {
+                            //Increase quantity
                             int increaseQuantity = data.getQuantityItemNumber();
                             increaseQuantity++;
                             data.setQuantityItemNumber(increaseQuantity);
