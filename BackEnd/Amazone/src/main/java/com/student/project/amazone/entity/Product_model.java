@@ -10,6 +10,7 @@ import static javax.persistence.GenerationType.AUTO;
 @Entity
 @Table(name = "product_model")
 @Data
+
 public class Product_model {
 
     @Id
@@ -20,4 +21,14 @@ public class Product_model {
     @ManyToOne
     @JoinColumn(name = "cata_product", insertable = false, updatable = false)
     private Catagory_model catagory;
+
+    public Product_model(String name, Long price, Catagory_model catagory) {
+        this.name = name;
+        this.price = price;
+        this.catagory = catagory;
+    }
+
+    public Product_model() {
+
+    }
 }

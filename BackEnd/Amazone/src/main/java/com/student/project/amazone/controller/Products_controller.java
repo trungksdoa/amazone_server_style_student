@@ -23,6 +23,7 @@ public class Products_controller {
         return ResponseEntity.ok().body(service.findAllProduct(datas));
     }
 
+
     @PostMapping
     public ResponseEntity<Product_model> saveProduct(@RequestBody Product_model product_model) {
         return ResponseEntity.ok().body(service.saveProduct(product_model));
