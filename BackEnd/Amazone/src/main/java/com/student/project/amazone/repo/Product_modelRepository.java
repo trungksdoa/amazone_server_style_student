@@ -17,5 +17,5 @@ public interface Product_modelRepository extends JpaRepository<Product_model, Lo
     public Product_model findProductById(Long id);
 
     @Query(value = "SELECT * FROM product_model", nativeQuery = true)
-    public List<Product_model> findAllProducts(Pageable pagingProducts);
+    public List<Product_model> findAllProducts();
 }

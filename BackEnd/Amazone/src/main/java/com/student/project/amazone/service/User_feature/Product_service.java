@@ -8,7 +8,7 @@ import java.util.List;
 public interface Product_service {
     public Product_model saveProduct(Product_model user);
 
-    public List<Product_model> findAllProduct(Pageable pagingProducts);
+    public List<Product_model> findAllProduct();
 
     public Product_model findUserById(Long id);
 

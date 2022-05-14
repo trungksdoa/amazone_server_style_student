@@ -26,8 +26,8 @@ public class Product_implement implements Product_service {
     }
 
     @Override
-    public List<Product_model> findAllProduct(Pageable pagingProducts) {
-        return service.findAllProducts(pagingProducts);
+    public List<Product_model> findAllProduct() {
+        return service.findAll();
     }
 
     @Override
