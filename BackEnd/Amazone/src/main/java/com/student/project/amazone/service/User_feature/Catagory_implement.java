@@ -23,9 +23,13 @@ public class Catagory_implement implements Catagory_service{
     }
     @Override
     public Catagory_model saveCatagory(Catagory_model user){
-        if (service.findByName(user.getName()) == null)
+
             return service.save(user);
-        throw new ConflictException("Catagory already exists");
+    }
+
+    @Override
+    public Catagory_model updateCategory(Catagory_model user) {
+        return service.save(user);
     }
 
     @Override
@@ -38,9 +42,8 @@ public class Catagory_implement implements Catagory_service{
         throw new NotFoundException("Catagory not exists");
     }
     @Override
-    public void deleteCatagory(Catagory_model user){
-        if (service.findCatagoryById(user.getId()) != null) service.delete(user);
-        throw new NotFoundException("Catagory not exists");
+    public void deleteCatagory(Long id){
+         service.deleteCatagoryById(id);
     }
     @Override
     public Catagory_model findUserByName(String name){

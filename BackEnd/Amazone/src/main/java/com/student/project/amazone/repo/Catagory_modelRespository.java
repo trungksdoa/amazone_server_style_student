@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface Catagory_modelRespository extends JpaRepository<Catagory_model,Long> {
     Catagory_model findByName(String name);
+    void deleteCatagoryById(Long id);
 
     @Query(value = "SELECT * FROM catagory_model WHERE id = ?1",
             nativeQuery = true)

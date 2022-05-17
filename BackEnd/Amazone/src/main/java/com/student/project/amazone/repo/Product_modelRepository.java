@@ -12,6 +12,7 @@ import java.util.List;
 public interface Product_modelRepository extends JpaRepository<Product_model, Long> {
     Product_model findByName(String name);
 
+    void deleteProductById(Long id);
     @Query(value = "SELECT * FROM product_model WHERE id = ?1",
             nativeQuery = true)
     public Product_model findProductById(Long id);
