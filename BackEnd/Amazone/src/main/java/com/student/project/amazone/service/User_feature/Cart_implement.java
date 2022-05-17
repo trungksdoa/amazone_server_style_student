@@ -1,10 +1,11 @@
 package com.student.project.amazone.service.User_feature;
 
-import com.student.project.amazone.entity.CartItem;
-import com.student.project.amazone.entity.Cart_model;
+import com.student.project.amazone.entity.cartItem;
+import com.student.project.amazone.entity.cartModel;
 import com.student.project.amazone.entity.Users_model;
 import com.student.project.amazone.repo.CartItemDtoRepository;
 import com.student.project.amazone.repo.Cart_modelRepository;
+import com.sun.jersey.api.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,7 +24,7 @@ public class Cart_implement implements Cart_service {
         this.cartItemDtoRepository = cartItemDtoRepository;
     }
 
-    public boolean inCartItem(Cart_model cartModel) {
+    public boolean inCartItem(cartModel cartModel) {
         boolean itemExists = false;
         if (!cartModel.getCartItem().isEmpty()) {
             itemExists = true;
@@ -32,46 +33,46 @@ public class Cart_implement implements Cart_service {
     }
 
     @Override
-    public Cart_model CartSave(CartItem cartitem, Long userId) {
-        Cart_model cartExist = cart_modelRepository.findCart_modelByUserId(userId);
-        if (cartExist != null) {
-            cartExist.getCartItem().stream().forEach(
-                    data -> {
-                        if (data.getProductItem().getId().equals(cartitem.getProductItem().getId())) {
-                            //Increase quantity
-                            int increaseQuantity = data.getQuantityItemNumber();
-                            increaseQuantity++;
-                            data.setQuantityItemNumber(increaseQuantity);
-                        } else {
-                            cartExist.getCartItem().add(cartitem);
-                        }
-                    });
-            return cart_modelRepository.save(cartExist);
-        } else {
-            Cart_model newCart = new Cart_model(true, userId);
-            newCart.getCartItem().add(cartitem);
-            return cart_modelRepository.save(newCart);
-        }
+    public cartModel cartByUserId(Long userId) {
+        cartModel cartExist = cart_modelRepository.findCart_modelByUserId(userId);
+        return cartExist;
     }
 
     @Override
-    public Cart_model CartUpdate(Long CartId, Long itemId, int quantity) {
-        Cart_model cartitem = cart_modelRepository.getById(CartId);
-        if (inCartItem(cartitem)) {
-            cartitem.getCartItem().stream().forEach(
-                    data -> {
-                        if (data.getId().equals(itemId)) {
-                            data.setQuantityItemNumber(quantity);
-                        }
-                    }
-            );
+    public cartModel saveOrUpdate(cartItem cartitem, Long userId) {
+
+        cartModel cartExist = cartByUserId(userId);
+        if (cartExist != null) {
+            cartItem item = cartItemDtoRepository.findByProductId(cartitem.getProductItem().getId());
+            cartItemDtoRepository.save(item);
+            cartExist = cartByUserId(userId);
+        } else {
+            cartExist = new cartModel(userId);
+            cartExist.getCartItem().add(cartitem);
+            cartExist = cart_modelRepository.save(cartExist);
         }
-        return cart_modelRepository.save(cartitem);
+        return cartExist;
+//        cartModel cartExist = cartByUserId(userId);
+//        if (cartExist != null) {
+//            cartExist.getCartItem().forEach(
+//                    data -> {
+//                        if (data.getProductItem().getId().equals(cartitem.getProductItem().getId())) {
+//                            data.setQuantityItemNumber(cartitem.getQuantityItemNumber());
+//                        } else {
+//                            cartExist.getCartItem().add(cartitem);
+//                        }
+//                    });
+//            return cart_modelRepository.save(cartExist);
+//        } else {
+//            cartModel newCart = new cartModel(userId);
+//            newCart.getCartItem().add(cartitem);
+//            return cart_modelRepository.save(newCart);
+//        }
     }
 
     @Override
     public void ItemDelete(Long CartId, Long itemId) {
-        Cart_model cartitem = cart_modelRepository.getById(CartId);
+        cartModel cartitem = cart_modelRepository.getById(CartId);
         if (inCartItem(cartitem)) {
             cartitem.getCartItem().removeIf(item -> item.getId().equals(itemId));
             cartitem.getCartItem().stream().filter(item -> item.getId().equals("223")).forEach(System.out::println);
@@ -81,14 +82,8 @@ public class Cart_implement implements Cart_service {
     }
 
     @Override
-    public Map<Users_model, Cart_model> cartMap() {
-        Map<Users_model, Cart_model> mapItem = new HashMap<>();
-        List<Cart_model> cart = cart_modelRepository.findAll();
-        if (cart != null) {
-            for (Cart_model items : cart) {
-                mapItem.put(items.getUserId(), items);
-            }
-        }
-        return mapItem;
+    public List<cartModel> cartList() {
+        List<cartModel> cart = cart_modelRepository.findAll();
+        return cart;
     }
 }

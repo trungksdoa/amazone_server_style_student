@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class CartItem {
+public class cartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -20,10 +20,13 @@ public class CartItem {
     private Product_model productItem;
 
     @JsonProperty("quantity")
-    private int QuantityItemNumber;
+    private int quantityItemNumber;
 
     @JsonProperty("productPrice")
-    private Long ProductPrice;
+    private Long productPrice;
+
+    @JsonProperty("itemActive")
+    private Boolean active;
 
     public Long getId() {
         return id;
