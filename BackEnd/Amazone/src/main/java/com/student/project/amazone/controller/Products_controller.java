@@ -1,6 +1,6 @@
 package com.student.project.amazone.controller;
 
-import com.student.project.amazone.entity.Catagory_model;
+
 import com.student.project.amazone.entity.Product_model;
 import com.student.project.amazone.service.User_feature.Product_service;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +28,23 @@ public class Products_controller {
    @PostMapping("save")
     public ResponseEntity<Product_model> saveProduct(@RequestBody Product_model product_model) {
         return ResponseEntity.ok().body(service.saveProduct(product_model));
+    }
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Product_model> getCategory(@PathVariable("id") Long id) {
+        Product_model cata = service.findUserById(id);
+        return new ResponseEntity<>(cata, HttpStatus.OK);
+    }
+
+
+    @PutMapping("/update")
+    public ResponseEntity<Product_model> updateCategory(@RequestBody Product_model cata) {
+        Product_model updateCategory = service.updateCategory(cata);
+        return new ResponseEntity<>(updateCategory, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id) {
+        service.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

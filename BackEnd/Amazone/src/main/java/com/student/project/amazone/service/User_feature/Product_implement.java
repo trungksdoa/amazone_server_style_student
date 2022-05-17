@@ -6,11 +6,14 @@ import com.sun.jersey.api.ConflictException;
 import com.sun.jersey.api.NotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Service
+@Transactional
 public class Product_implement implements Product_service {
     private final Product_modelRepository service;
 
@@ -26,6 +29,11 @@ public class Product_implement implements Product_service {
     }
 
     @Override
+    public Product_model updateCategory(Product_model user) {
+        return service.save(user);
+    }
+
+    @Override
     public List<Product_model> findAllProduct() {
         return service.findAll();
     }
@@ -37,9 +45,8 @@ public class Product_implement implements Product_service {
     }
 
     @Override
-    public void deleteProduct(Product_model prdocut) {
-        if (service.findProductById(prdocut.getId()) != null) service.delete(prdocut);
-        throw new NotFoundException("Product not exists");
+    public void deleteProduct(Long id ) {
+        service.deleteProductById(id);
     }
 
     @Override

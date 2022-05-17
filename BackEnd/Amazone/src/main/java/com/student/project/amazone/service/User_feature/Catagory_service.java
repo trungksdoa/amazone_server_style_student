@@ -8,12 +8,13 @@ import java.util.List;
 
 public interface Catagory_service {
     public Catagory_model saveCatagory(Catagory_model user);
+    public Catagory_model updateCategory(Catagory_model user);
 
     public List<Catagory_model> findAllCategory();
 
     public Catagory_model findUserById(Long id);
 
-    public void deleteCatagory(Catagory_model user);
+    public void deleteCatagory(Long id);
 
     public Catagory_model findUserByName(String name);
 }

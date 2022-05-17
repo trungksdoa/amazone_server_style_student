@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,5 +31,23 @@ public class Catagory_controller {
     @PostMapping("save")
     public ResponseEntity<Catagory_model> saveProduct(@RequestBody Catagory_model catagory_model) {
         return ResponseEntity.ok().body(service.saveCatagory(catagory_model));
+    }
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Catagory_model> getCategory(@PathVariable("id") Long id) {
+        Catagory_model cata = service.findUserById(id);
+        return new ResponseEntity<>(cata, HttpStatus.OK);
+    }
+
+
+    @PutMapping("/update")
+    public ResponseEntity<Catagory_model> updateCategory(@RequestBody Catagory_model cata) {
+        Catagory_model updateCategory = service.updateCategory(cata);
+        return new ResponseEntity<>(updateCategory, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id) {
+        service.deleteCatagory(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
