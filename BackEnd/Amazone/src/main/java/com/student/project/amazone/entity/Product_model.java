@@ -20,6 +20,9 @@ public class Product_model {
     @GeneratedValue(strategy = AUTO)
     private Long id;
     private String name;
+
+    private String description;
+
     private String imageurl;
     private Long price;
     @Column(name = "created_at")
