@@ -9,8 +9,9 @@ import java.util.Map;
 
 public interface Cart_service {
     cartModel cartByUserId(Long userId);
+    cartItem cartByProductId(Long productId);
     cartModel saveOrUpdate(cartItem cartitem, Long userId);
-    void ItemDelete(Long CartId, Long itemId);
+    void ItemDelete(long CartId, List<Long> itemId);
     List<cartModel> cartList();
 
 }

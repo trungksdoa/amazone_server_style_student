@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
-@Service
 @Transactional
+@Service
 public class Cart_implement implements Cart_service {
 
 
@@ -39,45 +40,41 @@ public class Cart_implement implements Cart_service {
     }
 
     @Override
-    public cartModel saveOrUpdate(cartItem cartitem, Long userId) {
-
-        cartModel cartExist = cartByUserId(userId);
-        if (cartExist != null) {
-            cartItem item = cartItemDtoRepository.findByProductId(cartitem.getProductItem().getId());
-            cartItemDtoRepository.save(item);
-            cartExist = cartByUserId(userId);
-        } else {
-            cartExist = new cartModel(userId);
-            cartExist.getCartItem().add(cartitem);
-            cartExist = cart_modelRepository.save(cartExist);
-        }
+    public cartItem cartByProductId(Long productId) {
+        cartItem cartExist = cartItemDtoRepository.findByProductId(productId);
         return cartExist;
-//        cartModel cartExist = cartByUserId(userId);
-//        if (cartExist != null) {
-//            cartExist.getCartItem().forEach(
-//                    data -> {
-//                        if (data.getProductItem().getId().equals(cartitem.getProductItem().getId())) {
-//                            data.setQuantityItemNumber(cartitem.getQuantityItemNumber());
-//                        } else {
-//                            cartExist.getCartItem().add(cartitem);
-//                        }
-//                    });
-//            return cart_modelRepository.save(cartExist);
-//        } else {
-//            cartModel newCart = new cartModel(userId);
-//            newCart.getCartItem().add(cartitem);
-//            return cart_modelRepository.save(newCart);
-//        }
     }
 
     @Override
-    public void ItemDelete(Long CartId, Long itemId) {
+    public cartModel saveOrUpdate(cartItem cartitem, Long userId) {
+        cartModel cartExist = cartByUserId(userId);
+        if (cartExist != null) {
+            if (cartExist.getCartItem().size() == 0) {
+                cartExist.getCartItem().add(cartitem);
+            } else {
+                cartExist.getCartItem().stream()
+                        .filter(item -> item.getProductItem().getId().equals(cartitem.getProductItem().getId()))
+                        .forEach(item -> {
+                            item.setQuantityItemNumber(cartitem.getQuantityItemNumber());
+                        });
+            }
+            return cart_modelRepository.save(cartExist);
+        } else {
+            cartModel newCart = new cartModel(userId);
+            newCart.getCartItem().add(cartitem);
+            return cart_modelRepository.save(newCart);
+        }
+    }
+
+    @Override
+    public void ItemDelete(long CartId, List<Long> itemId) {
         cartModel cartitem = cart_modelRepository.getById(CartId);
         if (inCartItem(cartitem)) {
-            cartitem.getCartItem().removeIf(item -> item.getId().equals(itemId));
-            cartitem.getCartItem().stream().filter(item -> item.getId().equals("223")).forEach(System.out::println);
-            System.out.println(cartitem.getCartItem().size());
-            cart_modelRepository.save(cartitem);
+
+            List<cartItem> deletedItems = cartitem.getCartItem().stream()
+                    .filter(e -> itemId.contains(e.getId()))
+                    .collect(Collectors.toList());
+            cartitem.getCartItem().removeAll(deletedItems);
         }
     }
 

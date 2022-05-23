@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.student.project.amazone.entity.cartItem;
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
@@ -21,7 +21,7 @@ public class cartModel extends DateAbstract  {
 
     @OneToMany(cascade = ALL, orphanRemoval = true)
     @JsonProperty("cartItem")
-    private List<com.student.project.amazone.entity.cartItem> cartItem = new ArrayList<>();
+    private List<cartItem> cartItem = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "FK_user_id")

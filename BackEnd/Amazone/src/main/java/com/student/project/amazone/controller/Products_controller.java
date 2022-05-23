@@ -34,6 +34,11 @@ public class Products_controller {
         Product_model cata = service.findUserById(id);
         return new ResponseEntity<>(cata, HttpStatus.OK);
     }
+    @GetMapping("one")
+    public ResponseEntity<Product_model> getOneProduct(@RequestParam("productId") Long id) {
+        Product_model cata = service.findUserById(id);
+        return new ResponseEntity<>(cata, HttpStatus.OK);
+    }
 
 
     @PutMapping("/update")
