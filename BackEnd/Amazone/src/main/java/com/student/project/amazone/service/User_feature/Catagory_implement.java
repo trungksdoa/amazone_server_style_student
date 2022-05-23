@@ -23,7 +23,6 @@ public class Catagory_implement implements Catagory_service{
     }
     @Override
     public Catagory_model saveCatagory(Catagory_model user){
-
             return service.save(user);
     }
 

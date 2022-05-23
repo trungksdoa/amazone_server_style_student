@@ -16,11 +16,15 @@
     <properties>
         <java.version>8</java.version>
     </properties>
+
     <dependencies>
 <!--   auto load     -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
 <!--   auto load      -->
         <dependency>
