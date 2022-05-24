@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e5f10861-31e1-494c-b572-ee1639123b30" name="Changes" comment="" />
+    <list default="true" id="e5f10861-31e1-494c-b572-ee1639123b30" name="Changes" comment="Changes">
+      <change beforePath="$PROJECT_DIR$/../.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Amazone/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Amazone/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Amazone/src/main/java/com/student/project/amazone/controller/ControllerProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/Amazone/src/main/java/com/student/project/amazone/controller/ControllerProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Amazone/src/main/java/com/student/project/amazone/controller/Products_controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/Amazone/src/main/java/com/student/project/amazone/controller/Products_controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Amazone/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Amazone/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,7 +27,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Amazone" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -31,10 +39,22 @@
       <option name="presentableId" value="Default" />
       <updated>1650612063538</updated>
       <workItem from="1650612065078" duration="407000" />
+      <workItem from="1653366922510" duration="68000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

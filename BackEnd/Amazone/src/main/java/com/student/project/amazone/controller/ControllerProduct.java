@@ -1,11 +1,19 @@
 package com.student.project.amazone.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.TreeTraversingParser;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.student.project.amazone.File.UploadService.FileStorageService;
 import com.student.project.amazone.entity.Catagory_model;
 import com.student.project.amazone.entity.Product_model;
 
 import com.student.project.amazone.service.User_feature.ServiceProduct;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,23 +54,22 @@ ControllerProduct {
 
 
 	@PostMapping("save")
-	public ResponseEntity create(@RequestParam(name = "image",required = false) MultipartFile file, @RequestParam("name") String name,
-			@RequestParam("description") String description, @RequestParam("price") Long price) {
+	public ResponseEntity create(@RequestParam(name = "image",required = false) Optional<MultipartFile> file, @RequestParam("product") String product) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		Product_model emp = null;
+		try {
+			emp = objectMapper.readValue(product, Product_model.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 
 		String imageName = "product.jpg";
 
 		if (file != null) {
-			imageName = fileStorageService.storeFile(file);
+			imageName = fileStorageService.storeFile(file.get());
 		}
-
-		Product_model product = new Product_model();
-
-		product.setName(name);
-		product.setDescription(description);
-		product.setPrice(price);
-		product.setImageurl(imageName);
-
-		return ResponseEntity.ok(serviceProduct.save(product));
+		emp.setImageurl(imageName);
+		return ResponseEntity.ok(serviceProduct.save(emp));
 	}
 
 	@GetMapping("/{id}")
