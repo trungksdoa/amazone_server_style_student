@@ -22,11 +22,47 @@ public class Users_controller {
         return ResponseEntity.ok().body("Login success");
     }
 
+
+    @GetMapping("isAdmin")
+    public ResponseEntity<Boolean> checkIsAdmin(@RequestParam String name) {
+        Users_model usersModel = service.findUserByName(name);
+        if (usersModel != null) {
+            if (usersModel.isAdmin()) {
+                return ResponseEntity.ok().body(true);
+            }
+        }
+        return ResponseEntity.ok().body(false);
+    }
+
+    @PatchMapping("banUser")
+    public ResponseEntity<Boolean> bannedUser(@RequestParam String name) {
+        Users_model usersModel = service.findUserByName(name);
+        if (usersModel != null) {
+            usersModel.setBanned(true);
+            if (service.saveUser(usersModel).isBanned()){
+                return ResponseEntity.ok().body(true);
+            }
+        }
+        return ResponseEntity.ok().body(false);
+    }
+
+    @GetMapping("isDeleted")
+    public ResponseEntity<Boolean> checkIsDeleted(@RequestParam String name) {
+        Users_model usersModel = service.findUserByName(name);
+        if (usersModel != null) {
+            if (usersModel.isDeleted()) {
+                return ResponseEntity.ok().body(true);
+            }
+        }
+        return ResponseEntity.ok().body(false);
+    }
+
     @PostMapping("login")
-    public ResponseEntity<Users_model> loginUsers(@RequestBody Users_model user) {
+    public ResponseEntity<Users_model.userDto> loginUsers(@RequestBody Users_model user) {
         if (service.isLoggedIn(user)) {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/login").toUriString());
-            return ResponseEntity.created(uri).body(user);
+            Users_model.userDto userDto = new Users_model.userDto(service.findUserByName(user.getName()));
+            return ResponseEntity.created(uri).body(userDto);
         } else {
             throw new IllegalStateException("Login fails");
         }

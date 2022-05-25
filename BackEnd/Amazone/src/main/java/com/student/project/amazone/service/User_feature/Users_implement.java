@@ -29,8 +29,6 @@ public class Users_implement implements Users_service {
 
     @Override
     public Users_model saveUser(Users_model user) {
-        if (service.findByName(user.getName()) != null)
-            throw new ConflictException("Account already exists");
         return service.save(user);
     }
 

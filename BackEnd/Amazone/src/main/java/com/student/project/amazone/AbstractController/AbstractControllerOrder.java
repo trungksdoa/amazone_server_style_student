@@ -1,8 +1,9 @@
 package com.student.project.amazone.AbstractController;
 
 import com.student.project.amazone.entity.Order_model;
+import com.student.project.amazone.service.User_feature.Order_service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractController {
+public abstract class AbstractControllerOrder {
+    @Autowired
+    private Order_service service;
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<Order_model>> getOrder() {
         return null;
@@ -21,4 +25,16 @@ public abstract class AbstractController {
         System.out.println(userId.get());
         return null;
     }
+
+    @RequestMapping(value = "/status", params = "change", method = RequestMethod.PATCH)
+    public ResponseEntity<Order_model> updateStatus(
+            @RequestParam(name = "change", required = false) Optional<Integer> change,
+            @RequestParam(name = "orderId", required = false) Optional<Long> orderId
+    ) {
+        Order_model orderModel = service.oneByOrderId(orderId.get());
+        orderModel.setStatus(change.get());
+
+        return ResponseEntity.ok().body(service.save(orderModel));
+    }
+
 }

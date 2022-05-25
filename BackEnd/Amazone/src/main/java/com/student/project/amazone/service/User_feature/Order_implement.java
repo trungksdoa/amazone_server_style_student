@@ -2,9 +2,6 @@ package com.student.project.amazone.service.User_feature;
 
 
 import com.student.project.amazone.entity.Order_model;
-import com.student.project.amazone.entity.cartItem;
-import com.student.project.amazone.entity.cartModel;
-import com.student.project.amazone.entity.orderItem_model;
 import com.student.project.amazone.repo.Order_modelRepository;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +30,13 @@ public class Order_implement implements Order_service {
     @Override
     public Order_model one(Long userId) {
         return modelRepository.findByUserId(userId);
+    }
+
+    @Override
+    public Order_model oneByOrderId(Long orderId) {
+        if (modelRepository.findById(orderId).isPresent()) {
+            return modelRepository.findById(orderId).get();
+        }
+        throw new IllegalStateException("Not found ID");
     }
 }
