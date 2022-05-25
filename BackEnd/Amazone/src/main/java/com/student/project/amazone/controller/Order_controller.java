@@ -1,11 +1,8 @@
 package com.student.project.amazone.controller;
 
 
-import com.student.project.amazone.AbstractController.AbstractController;
+import com.student.project.amazone.AbstractController.AbstractControllerOrder;
 import com.student.project.amazone.entity.Order_model;
-import com.student.project.amazone.entity.cartItem;
-import com.student.project.amazone.entity.orderItem_model;
-import com.student.project.amazone.service.User_feature.Cart_service;
 import com.student.project.amazone.service.User_feature.Order_service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/order")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
-public class Order_controller  extends AbstractController {
+public class Order_controller  extends AbstractControllerOrder {
     @Autowired
     private Order_service service;
 
@@ -39,5 +36,8 @@ public class Order_controller  extends AbstractController {
         return ResponseEntity.ok().body(service.one(userId.get()));
     }
 
-
+    @Override
+    public ResponseEntity<Order_model> updateStatus(Optional<Integer> change, Optional<Long> orderId) {
+        return super.updateStatus(change, orderId);
+    }
 }
