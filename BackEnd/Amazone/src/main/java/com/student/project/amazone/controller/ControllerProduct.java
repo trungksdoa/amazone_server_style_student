@@ -1,5 +1,7 @@
 package com.student.project.amazone.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.student.project.amazone.File.UploadService.FileStorageService;
 import com.student.project.amazone.entity.Catagory_model;
 import com.student.project.amazone.entity.Product_model;
@@ -46,8 +48,7 @@ ControllerProduct {
 
 
 	@PostMapping("save")
-	public ResponseEntity create(@RequestParam(name = "image",required = false) MultipartFile file, @RequestParam("name") String name,
-			@RequestParam("description") String description, @RequestParam("price") Long price) {
+	public ResponseEntity create(@RequestParam(name = "image",required = false) MultipartFile file, @RequestParam("product") String product){
 
 		String imageName = "product.jpg";
 
@@ -55,14 +56,18 @@ ControllerProduct {
 			imageName = fileStorageService.storeFile(file);
 		}
 
-		Product_model product = new Product_model();
+		ObjectMapper objectMapper = new ObjectMapper();
 
-		product.setName(name);
-		product.setDescription(description);
-		product.setPrice(price);
-		product.setImageurl(imageName);
+// Deserialization into the `Employee` class
+		Product_model emp = null;
+		try {
+			emp = objectMapper.readValue(product, Product_model.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		emp.setImageurl(imageName);
 
-		return ResponseEntity.ok(serviceProduct.save(product));
+		return ResponseEntity.ok(serviceProduct.save(emp));
 	}
 
 	@GetMapping("/{id}")
@@ -76,6 +81,8 @@ ControllerProduct {
 	}
 	@PutMapping("/update")
 	public ResponseEntity<Product_model> updateCategory(@RequestBody Product_model cata) {
+		Product_model findProduct = serviceProduct.findById(cata.getId()).get();
+		cata.setImageurl(findProduct.getImageurl());
 		Product_model updateCategory = serviceProduct.save(cata);
 		return new ResponseEntity<>(updateCategory, HttpStatus.OK);
 	}

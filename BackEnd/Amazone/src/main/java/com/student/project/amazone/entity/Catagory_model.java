@@ -45,9 +45,14 @@ public class Catagory_model {
     protected void preRemove() {
         this.updatedAt = new Date();
     }
-    @OneToMany
-    @JoinColumn(name = "cata_product") // we need to duplicate the physical information
-    private Set<Product_model> items;
+
+
+
+
+//    what this?????
+//    @OneToMany
+//    @JoinColumn(name = "cata_product") // we need to duplicate the physical information
+//    private Set<Product_model> items;
 
 
 }
