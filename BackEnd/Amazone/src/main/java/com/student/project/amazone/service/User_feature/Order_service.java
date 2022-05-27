@@ -11,4 +11,6 @@ public interface Order_service {
     public List<Order_model> all();
 
     public Order_model one(Long userId);
+
+    public Order_model oneByOrderId(Long orderId);
 }
