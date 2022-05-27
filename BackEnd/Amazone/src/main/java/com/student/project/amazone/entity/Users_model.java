@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.lang.String;
+import java.util.Set;
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.AUTO;
@@ -17,6 +18,7 @@ public class Users_model {
     @GeneratedValue(strategy = AUTO)
     private long id;
     private String name;
+    private String username;
     private String password;
     private String address;
     private String phone;
