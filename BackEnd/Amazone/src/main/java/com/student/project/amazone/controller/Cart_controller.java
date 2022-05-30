@@ -60,6 +60,7 @@ public class Cart_controller {
                 field.setAccessible(true);
                 ReflectionUtils.setField(field, item, value);
             });
+            item.setProductPrice((item.getQuantityItemNumber()*item.getProductItem().getPrice()));
             service.saveOrUpdate(item, Long.valueOf(userId));
         });
         return ResponseEntity.ok().body(cartModel);

@@ -70,7 +70,7 @@ ControllerProduct {
 		return ResponseEntity.ok(serviceProduct.save(emp));
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	public ResponseEntity<Product_model> findById(@PathVariable Long id) {
 		Optional<Product_model> product = serviceProduct.findById(id);
 		if (!product.isPresent()) {
