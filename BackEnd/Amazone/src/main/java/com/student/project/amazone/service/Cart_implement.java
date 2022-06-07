@@ -2,10 +2,8 @@ package com.student.project.amazone.service;
 
 import com.student.project.amazone.entity.cartItem;
 import com.student.project.amazone.entity.cartModel;
-import com.student.project.amazone.entity.Users_model;
 import com.student.project.amazone.repo.CartItemDtoRepository;
 import com.student.project.amazone.repo.Cart_modelRepository;
-import com.sun.jersey.api.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

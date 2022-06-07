@@ -24,8 +24,8 @@ public class Users_controller {
 
 
     @GetMapping("isAdmin")
-    public ResponseEntity<Boolean> checkIsAdmin(@RequestParam String name) {
-        Users_model usersModel = service.findUserByName(name);
+    public ResponseEntity<Boolean> checkIsAdmin(@RequestParam String username) {
+        Users_model usersModel = service.findUserByName(username);
         if (usersModel != null) {
             if (usersModel.isAdmin()) {
                 return ResponseEntity.ok().body(true);
@@ -35,8 +35,8 @@ public class Users_controller {
     }
 
     @PatchMapping("banUser")
-    public ResponseEntity<Boolean> bannedUser(@RequestParam String name) {
-        Users_model usersModel = service.findUserByName(name);
+    public ResponseEntity<Boolean> bannedUser(@RequestParam String username) {
+        Users_model usersModel = service.findUserByName(username);
         if (usersModel != null) {
             usersModel.setBanned(true);
             if (service.saveUser(usersModel).isBanned()){
@@ -47,8 +47,8 @@ public class Users_controller {
     }
 
     @GetMapping("isDeleted")
-    public ResponseEntity<Boolean> checkIsDeleted(@RequestParam String name) {
-        Users_model usersModel = service.findUserByName(name);
+    public ResponseEntity<Boolean> checkIsDeleted(@RequestParam String username) {
+        Users_model usersModel = service.findUserByName(username);
         if (usersModel != null) {
             if (usersModel.isDeleted()) {
                 return ResponseEntity.ok().body(true);
@@ -61,7 +61,7 @@ public class Users_controller {
     public ResponseEntity<Users_model.userDto> loginUsers(@RequestBody Users_model user) {
         if (service.isLoggedIn(user)) {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/login").toUriString());
-            Users_model.userDto userDto = new Users_model.userDto(service.findUserByName(user.getName()));
+            Users_model.userDto userDto = new Users_model.userDto(service.findUserByName(user.getUsername()));
             return ResponseEntity.created(uri).body(userDto);
         } else {
             throw new IllegalStateException("Login fails");
@@ -79,7 +79,7 @@ public class Users_controller {
     public ResponseEntity<Users_model> UpdateUser(@PathVariable String id, @RequestBody Users_model user) {
         if (service.findUserById(Long.valueOf(id)) != null) {
             user.setId(Long.valueOf(id));
-            service.saveUser(service.findUserByName(user.getName()));
+            service.saveUser(service.findUserByName(user.getUsername()));
         }
 
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/save").toUriString());

@@ -14,6 +14,7 @@ public interface Product_service {
 
     public Product_model findUserById(Long id);
 
+    public Product_model findProductByCartId(Long id);
 
     public void deleteProduct(Long id);
 

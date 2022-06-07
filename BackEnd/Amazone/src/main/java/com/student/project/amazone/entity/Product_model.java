@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.GenerationType.AUTO;
 
 @Entity
@@ -46,9 +48,9 @@ public class Product_model {
         this.updatedAt = new Date();
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = PERSIST)
     @JoinColumn(name = "cata_product")
-    private Catagory_model catagory;
+        private Catagory_model catagory;
 
     public Product_model(String name, Long price, Catagory_model catagory) {
         this.name = name;
