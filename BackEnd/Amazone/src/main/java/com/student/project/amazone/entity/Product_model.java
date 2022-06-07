@@ -50,7 +50,7 @@ public class Product_model {
 
     @ManyToOne(cascade = PERSIST)
     @JoinColumn(name = "cata_product")
-    private Catagory_model catagory;
+        private Catagory_model catagory;
 
     public Product_model(String name, Long price, Catagory_model catagory) {
         this.name = name;

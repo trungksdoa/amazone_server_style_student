@@ -1,28 +1,18 @@
 package com.student.project.amazone.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.TreeTraversingParser;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.student.project.amazone.File.UploadService.FileStorageService;
-import com.student.project.amazone.entity.Catagory_model;
 import com.student.project.amazone.entity.Product_model;
 
 import com.student.project.amazone.service.User_feature.ServiceProduct;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,10 +37,10 @@ ControllerProduct {
 		List<Product_model> cata = serviceProduct.findAll();
 		return new ResponseEntity<>(cata, HttpStatus.OK);
 	}
-	@GetMapping
-	public ResponseEntity<List<Product_model>> findAll(@RequestParam(value = "name", defaultValue = "") String name) {
-		return ResponseEntity.ok(serviceProduct.findProductsByName(name));
-	}
+//	@GetMapping
+//	public ResponseEntity<List<Product_model>> findAll(@RequestParam(value = "name", defaultValue = "") String name) {
+//		return ResponseEntity.ok(serviceProduct.findProductsByName(name));
+//	}
 
 
 	@PostMapping("save")
@@ -72,14 +62,19 @@ ControllerProduct {
 		return ResponseEntity.ok(serviceProduct.save(emp));
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Product_model> findById(@PathVariable Long id) {
-		Optional<Product_model> product = serviceProduct.findById(id);
-		if (!product.isPresent()) {
-			ResponseEntity.badRequest().build();
-		}
+	@GetMapping("{id}")
+	public ResponseEntity<List<Product_model>> findById(@PathVariable("id") String id) {
+		List<Product_model> cata = serviceProduct.findByCateId(Long.parseLong(id));
+		return new ResponseEntity<>(cata, HttpStatus.OK);
 
-		return ResponseEntity.ok(product.get());
+
+	}
+	@GetMapping("/search")
+	public ResponseEntity<List<Product_model>> findByName(@RequestParam("name") String name) {
+		List<Product_model> cata = serviceProduct.findByName(name);
+		return new ResponseEntity<>(cata, HttpStatus.OK);
+
+
 	}
 	@PutMapping("/update")
 	public ResponseEntity<Product_model> updateCategory(@RequestBody Product_model cata) {
@@ -91,6 +86,14 @@ ControllerProduct {
 		serviceProduct.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+//	@GetMapping("/{id}")
+//	public ResponseEntity<List<Product_model>> findByCateId(@PathVariable(value = "id") Long id) {
+//
+//			return ResponseEntity.ok().body(serviceProduct.findProductByCartId(id)));
+//
+//
+//
+//	}
 
 
 }

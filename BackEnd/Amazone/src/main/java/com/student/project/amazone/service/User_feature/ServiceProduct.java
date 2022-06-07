@@ -20,14 +20,25 @@ public class ServiceProduct {
 		return result;
 	}
 
-	public List<Product_model> findProductsByName(String name) {
+//	public List<Product_model> findProductsByName(String name) {
+//		List<Product_model> result = new ArrayList<Product_model>();
+//		repositoryProduct.findProductsByName(name).forEach(result::add);
+//		return result;
+//	}
+	public List<Product_model> findByName(String name){
 		List<Product_model> result = new ArrayList<Product_model>();
-		repositoryProduct.findProductsByName(name).forEach(result::add);
+		repositoryProduct.findProduct_modelByNameContaining(name).forEach(result::add);
 		return result;
 	}
-
 	public Optional<Product_model> findById(Long id) {
 		return repositoryProduct.findById(id);
+	}
+	public List<Product_model> findByCateId(Long id){
+		List<Product_model> result = new ArrayList<Product_model>();
+		repositoryProduct.findProductByCartId(id).forEach(result::add);
+
+		return result;
+//		return repositoryProduct.findProductByCartId(id);
 	}
 
 	public Product_model save(Product_model stock) {
@@ -50,5 +61,6 @@ public class ServiceProduct {
 	public void deleteById(Long id) {
 		repositoryProduct.deleteById(id);
 	}
+
 
 }

@@ -3,16 +3,16 @@ package com.student.project.amazone.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-<<<<<<< HEAD
+
 import java.lang.String;
 import java.util.Set;
 import javax.persistence.*;
-=======
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
->>>>>>> 4e741b5dbcfb3efb7139d466aced2190ce127b79
+
 
 import static javax.persistence.GenerationType.AUTO;
 
@@ -33,8 +33,9 @@ public class Users_model {
     private boolean isDeleted;
 
     @Data
-   public static class userDto {
+    public static class userDto {
         private long id;
+        private String username;
         private String name;
         private String address;
         private String phone;
@@ -43,6 +44,7 @@ public class Users_model {
 
         public userDto(Users_model usersModel) {
             this.id = usersModel.id;
+            this.username = usersModel.username;
             this.name = usersModel.name;
             this.address = usersModel.address;
             this.phone = usersModel.phone;
