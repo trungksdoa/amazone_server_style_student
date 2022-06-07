@@ -1,7 +1,9 @@
 package com.student.project.amazone.AbstractController;
 
+import com.student.project.amazone.dto.Order_modelInfo;
+import com.student.project.amazone.entity.ChartOption;
 import com.student.project.amazone.entity.Order_model;
-import com.student.project.amazone.service.User_feature.Order_service;
+import com.student.project.amazone.service.Order_service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +22,23 @@ public abstract class AbstractControllerOrder {
         return null;
     }
 
-    @RequestMapping(value = "", params = "userId", method = RequestMethod.GET)
-    public ResponseEntity<Order_model> getOrder(@RequestParam(name = "userId", required = false) Optional<Long> userId) {
-        System.out.println(userId.get());
+    @RequestMapping(value = "/profile/chartTotal", method = RequestMethod.GET)
+    public ResponseEntity<ChartOption> getValueIn12Month(@RequestParam String userId) {
         return null;
     }
+
+    @RequestMapping(value = "/profile/top5Order", method = RequestMethod.GET)
+    public ResponseEntity<List<Order_model>> gettop5Order(@RequestParam String userId) {
+        return null;
+    }
+
+    @RequestMapping(value = "", params = "userId", method = RequestMethod.GET)
+    public ResponseEntity<List<Order_model>> getOrder(@RequestParam(name = "userId", required = false) Optional<Long> userId) {
+//        System.out.println(userId.get());
+        return null;
+    }
+
+
 
     @RequestMapping(value = "/status", params = "change", method = RequestMethod.PATCH)
     public ResponseEntity<Order_model> updateStatus(

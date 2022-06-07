@@ -2,7 +2,7 @@ package com.student.project.amazone.controller;
 
 
 import com.student.project.amazone.entity.Users_model;
-import com.student.project.amazone.service.User_feature.Users_service;
+import com.student.project.amazone.service.Users_service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
