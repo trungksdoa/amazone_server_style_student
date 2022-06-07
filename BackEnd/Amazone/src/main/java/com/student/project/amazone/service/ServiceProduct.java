@@ -1,4 +1,4 @@
-package com.student.project.amazone.service.User_feature;
+package com.student.project.amazone.service;
 
 import com.student.project.amazone.entity.Product_model;
 import com.student.project.amazone.repo.Product_modelRepository;

@@ -41,10 +41,10 @@ ControllerProduct_mn {
         return new ResponseEntity<>(cata, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Product_model>> findAll(@RequestParam(value = "name", defaultValue = "") String name) {
-        return ResponseEntity.ok(serviceProduct.findProductsByName(name));
-    }
+//    @GetMapping
+//    public ResponseEntity<List<Product_model>> findAll(@RequestParam(value = "name", defaultValue = "") String name) {
+//        return ResponseEntity.ok(serviceProduct.findProductsByName(name));
+//    }
 
     public String getRamdom(){
         int leftLimit = 97; // letter 'a'

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.student.project.amazone.File.UploadService.FileStorageService;
 import com.student.project.amazone.entity.Product_model;
 
-import com.student.project.amazone.service.User_feature.ServiceProduct;
+import com.student.project.amazone.service.ServiceProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,13 +62,18 @@ ControllerProduct {
 		return ResponseEntity.ok(serviceProduct.save(emp));
 	}
 
-	@GetMapping("{id}")
-	public ResponseEntity<List<Product_model>> findById(@PathVariable("id") String id) {
+	@GetMapping("category/{id}")
+	public ResponseEntity<List<Product_model>> findProductByCateId(@PathVariable("id") String id) {
 		List<Product_model> cata = serviceProduct.findByCateId(Long.parseLong(id));
 		return new ResponseEntity<>(cata, HttpStatus.OK);
-
-
 	}
+
+	@GetMapping("{id}")
+	public ResponseEntity<Product_model> findProductById(@PathVariable("id") String id) {
+		Product_model cata = serviceProduct.findById(Long.parseLong(id)).get();
+		return new ResponseEntity<>(cata, HttpStatus.OK);
+	}
+
 	@GetMapping("/search")
 	public ResponseEntity<List<Product_model>> findByName(@RequestParam("name") String name) {
 		List<Product_model> cata = serviceProduct.findByName(name);
