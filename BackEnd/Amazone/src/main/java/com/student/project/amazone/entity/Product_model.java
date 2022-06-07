@@ -47,7 +47,7 @@ public class Product_model {
     }
 
     @ManyToOne
-    @JoinColumn(name = "cata_product", insertable = false, updatable = false)
+    @JoinColumn(name = "cata_product")
     private Catagory_model catagory;
 
     public Product_model(String name, Long price, Catagory_model catagory) {

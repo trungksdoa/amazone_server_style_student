@@ -2,7 +2,7 @@ package com.student.project.amazone.controller;
 
 import com.student.project.amazone.entity.Catagory_model;
 import com.student.project.amazone.entity.Product_model;
-import com.student.project.amazone.service.User_feature.Catagory_service;
+import com.student.project.amazone.service.Catagory_service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

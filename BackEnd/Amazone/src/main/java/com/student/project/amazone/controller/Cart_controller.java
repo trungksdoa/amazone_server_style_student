@@ -2,7 +2,7 @@ package com.student.project.amazone.controller;
 
 import com.student.project.amazone.entity.cartItem;
 import com.student.project.amazone.entity.cartModel;
-import com.student.project.amazone.service.User_feature.Cart_service;
+import com.student.project.amazone.service.Cart_service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +45,8 @@ public class Cart_controller {
             int count = cartitem.getQuantityItemNumber();
             count++;
             cartitem.setQuantityItemNumber(count);
+            cartitem.setProductPrice(cartitem.getProductItem().getPrice() * count);
+
             return ResponseEntity.ok().body(service.saveOrUpdate(cartitem, Long.valueOf(userId)));
         }
         return ResponseEntity.ok().body(service.saveOrUpdate(requestCart, Long.valueOf(userId)));

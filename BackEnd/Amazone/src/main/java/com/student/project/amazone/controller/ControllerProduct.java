@@ -6,7 +6,7 @@ import com.student.project.amazone.File.UploadService.FileStorageService;
 import com.student.project.amazone.entity.Catagory_model;
 import com.student.project.amazone.entity.Product_model;
 
-import com.student.project.amazone.service.User_feature.ServiceProduct;
+import com.student.project.amazone.service.ServiceProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +41,16 @@ ControllerProduct {
 		List<Product_model> cata = serviceProduct.findAll();
 		return new ResponseEntity<>(cata, HttpStatus.OK);
 	}
+
+	@GetMapping("findByCate")
+	public ResponseEntity<List<Product_model>> findByCate(@RequestParam("abc") String dsad,@RequestParam("bcd") String sdas) {
+
+		System.out.println(sdas);
+		List<Product_model> cata = serviceProduct.findByCate(Long.parseLong(dsad));
+		return new ResponseEntity<>(cata, HttpStatus.OK);
+	}
+
+
 	@GetMapping
 	public ResponseEntity<List<Product_model>> findAll(@RequestParam(value = "name", defaultValue = "") String name) {
 		return ResponseEntity.ok(serviceProduct.findProductsByName(name));

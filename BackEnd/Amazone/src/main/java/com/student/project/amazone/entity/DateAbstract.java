@@ -4,28 +4,31 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 
 @Data
 @MappedSuperclass
 public abstract class DateAbstract implements Serializable {
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "last_updated")
-    private Date LastUpdated;
+    private Calendar LastUpdated;
 
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "create_at")
-    private Date CreateAt;
+    private Calendar CreateAt;
 
     @PrePersist
     public void prePersist() {
         if (CreateAt == null) {
-            CreateAt = new Date();
+            CreateAt  = Calendar.getInstance();
         }
     }
 
     @PreUpdate
     public void preUpdate() {
-        LastUpdated = new Date();
+        Date date = new Date();;
+        LastUpdated = Calendar.getInstance();
     }
 }

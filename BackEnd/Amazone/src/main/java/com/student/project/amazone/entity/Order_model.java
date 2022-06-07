@@ -46,6 +46,9 @@ public class Order_model extends DateAbstract {
     @JsonProperty("address")
     private String address;
 
+    @JsonProperty("totalAmount")
+    private Long totalAmount;
+
     @JsonProperty("status")
     private int status;
 

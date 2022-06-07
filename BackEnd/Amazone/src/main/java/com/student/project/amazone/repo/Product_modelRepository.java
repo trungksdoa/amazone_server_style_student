@@ -15,6 +15,9 @@ public interface Product_modelRepository extends JpaRepository<Product_model, Lo
 
     void deleteProductById(Long id);
 
+    @Query("FROM Product_model c where c.catagory.id = :catagory")
+    List<Product_model> findProductByCartId(@Param("catagory") Long id);
+
     @Query(value="select * from product u where u.name LIKE %:name%",nativeQuery=true)
     List<Product_model> findProductsByName(@Param("name") String name);
     @Query(value = "SELECT * FROM product_model WHERE id = ?1",

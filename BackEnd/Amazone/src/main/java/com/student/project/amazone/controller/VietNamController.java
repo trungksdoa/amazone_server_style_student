@@ -1,7 +1,7 @@
 package com.student.project.amazone.controller;
 
 import com.student.project.amazone.entity.A_City;
-import com.student.project.amazone.service.User_feature.VietNam_service;
+import com.student.project.amazone.service.VietNam_service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
