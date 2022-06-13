@@ -1,5 +1,6 @@
 package com.student.project.amazone.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +20,7 @@ public class cartModel extends DateAbstract  {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
+//    @JsonManagedReference
     @OneToMany(cascade = ALL, orphanRemoval = true)
     @JsonProperty("cartItem")
     private List<cartItem> cartItem = new ArrayList<>();
@@ -28,6 +30,8 @@ public class cartModel extends DateAbstract  {
     @JsonProperty("userId")
     private Users_model userId;
 
+    @JsonProperty("TotalPrice")
+    private Long TotalPrice;
 
     public cartModel(Long userId) {
         super();

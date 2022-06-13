@@ -1,9 +1,13 @@
 package com.student.project.amazone.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+
+import static javax.persistence.CascadeType.ALL;
 
 
 @Entity
@@ -13,6 +17,8 @@ public class cartItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
+
+
 
     @ManyToOne
     @JoinColumn(name = "product_FK_Item_id")
@@ -25,7 +31,6 @@ public class cartItem {
     @JsonProperty("productPrice")
     private Long productPrice;
 
-    @JsonProperty("itemActive")
     private Boolean active;
 
     public Long getId() {
@@ -35,4 +40,6 @@ public class cartItem {
     public void setId(Long id) {
         this.id = id;
     }
+
+
 }

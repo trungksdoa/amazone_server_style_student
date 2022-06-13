@@ -1,18 +1,15 @@
 package com.student.project.amazone.controller;
 
-import com.student.project.amazone.entity.cartItem;
 import com.student.project.amazone.entity.cartModel;
 import com.student.project.amazone.service.Cart_service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.Long.valueOf;
 
@@ -36,41 +33,42 @@ public class Cart_controller {
         return ResponseEntity.ok().body(service.cartList());
     }
 
-    @PostMapping
-    public ResponseEntity<cartModel> add(@RequestBody cartItem requestCart, @RequestParam String userId) {
-        requestCart.setProductPrice(requestCart.getProductItem().getPrice() * requestCart.getQuantityItemNumber());
-        System.out.println(requestCart.getProductPrice());
-        cartItem cartitem = service.cartByProductId(valueOf(requestCart.getProductItem().getId()));
-        if (cartitem != null) {
-            int count = cartitem.getQuantityItemNumber();
-            count++;
-            cartitem.setQuantityItemNumber(count);
-            cartitem.setProductPrice(cartitem.getProductItem().getPrice() * count);
 
-            return ResponseEntity.ok().body(service.saveOrUpdate(cartitem, Long.valueOf(userId)));
-        }
-        return ResponseEntity.ok().body(service.saveOrUpdate(requestCart, Long.valueOf(userId)));
+    @GetMapping("/mini")
+    public ResponseEntity<Map<String, String>> mapMini(@RequestParam String userId) {
+
+        Map<String, String> fields = new HashMap<String, String>();
+
+        cartModel cartModel = service.cartByUserId(Long.valueOf(userId));
+
+        fields.put("uniqueItemInCart", cartModel.getCartItem().size() + "");
+        return ResponseEntity.ok().body(fields);
     }
 
 
+    @PutMapping
+    public ResponseEntity<cartModel> add(@RequestBody cartModel requestCart) {
+        return ResponseEntity.ok().body(service.save(requestCart));
+    }
+
     @PatchMapping
-    public ResponseEntity<cartModel> patch(@RequestParam String userId, @RequestBody Map<Object, Object> fields) {
-        cartModel cartModel = service.cartByUserId(Long.valueOf(userId));
-        cartModel.getCartItem().forEach(item -> {
-            fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(cartItem.class, (String) key);
-                field.setAccessible(true);
-                ReflectionUtils.setField(field, item, value);
-            });
-            item.setProductPrice((item.getQuantityItemNumber()*item.getProductItem().getPrice()));
-            service.saveOrUpdate(item, Long.valueOf(userId));
-        });
-        return ResponseEntity.ok().body(cartModel);
+    public ResponseEntity<cartModel> patch(@RequestParam String userId, @RequestParam String itemId, @RequestBody Map<Object, Object> fields) {
+        return ResponseEntity.ok().body(service.update(itemId, Long.valueOf(userId), fields));
     }
 
     @DeleteMapping
-    public ResponseEntity<String> delete(@RequestParam String CartId, @RequestBody List<Long> Itemid) {
-        service.ItemDelete(valueOf(CartId), Itemid);
-        return ResponseEntity.ok().body("Deletes success");
+    public ResponseEntity<Map<String, String>> delete(@RequestParam String CartId, @RequestBody List<Long> Itemid) {
+
+
+        cartModel cartModel = service.cartByCartId(Long.parseLong(CartId));
+
+        if(cartModel.getCartItem().size() != 0){
+            service.ItemDelete(valueOf(CartId), Itemid);
+        }
+        Map<String, String> fields = new HashMap<String, String>();
+
+        fields.put("uniqueItemInCart", cartModel.getCartItem().size() + "");
+        fields.put("message", "Delete item in cart success");
+        return ResponseEntity.ok().body(fields);
     }
 }
