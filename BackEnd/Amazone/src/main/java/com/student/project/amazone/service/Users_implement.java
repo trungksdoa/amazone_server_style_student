@@ -20,7 +20,7 @@ public class Users_implement implements Users_service {
 
     @Override
     public boolean isLoggedIn(Users_model usersModel) {
-        Users_model users_model = service.findByUsernameAndPassword(usersModel.getUsername(), usersModel.getPassword());
+        Users_model users_model = service.findUserByUsernameAndPassword(usersModel.getUsername(), usersModel.getPassword());
         if (users_model != null) return true;
         throw new NotFoundException("Account not found");
     }

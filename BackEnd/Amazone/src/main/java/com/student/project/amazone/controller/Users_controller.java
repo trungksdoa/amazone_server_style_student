@@ -60,9 +60,9 @@ public class Users_controller {
     @PostMapping("login")
     public ResponseEntity<Users_model.userDto> loginUsers(@RequestBody Users_model user) {
         if (service.isLoggedIn(user)) {
-            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/login").toUriString());
+
             Users_model.userDto userDto = new Users_model.userDto(service.findUserByName(user.getUsername()));
-            return ResponseEntity.created(uri).body(userDto);
+            return ResponseEntity.ok().body(userDto);
         } else {
             throw new IllegalStateException("Login fails");
         }
