@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.student.project.amazone.File.UploadService.FileStorageService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:9111")
 public class FileDownloadController {
 
-    private static final Logger logger = LoggerFactory.getLogger(FileDownloadController.class);
+
     private static final Path CURRENT_FOLDER = Paths.get(System.getProperty("user.dir"));
     @Autowired
     private FileStorageService fileStorageService;
@@ -40,7 +38,7 @@ public class FileDownloadController {
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
-            logger.info("Could not determine file type.");
+            System.out.println("Fault"+ex);
         }
 
         // Fallback to the default content type if type could not be determined

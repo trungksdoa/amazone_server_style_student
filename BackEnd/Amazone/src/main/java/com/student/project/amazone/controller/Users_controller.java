@@ -2,8 +2,10 @@ package com.student.project.amazone.controller;
 
 
 import com.student.project.amazone.entity.Users_model;
+import com.student.project.amazone.repo.Users_modelRepository;
 import com.student.project.amazone.service.Users_service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,6 +18,7 @@ import java.net.URI;
 @CrossOrigin(origins = "http://localhost:4200")
 public class Users_controller {
     private final Users_service service;
+    private final Users_modelRepository resposity;
 
     @GetMapping
     public ResponseEntity<String> getUsers() {
@@ -69,10 +72,15 @@ public class Users_controller {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Users_model> saveUser(@RequestBody Users_model user) {
-        service.saveUser(user);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/save").toUriString());
-        return ResponseEntity.created(uri).body(user);
+    public ResponseEntity<?> saveUser(@RequestBody Users_model user) {
+        if(resposity.existsByUsername(user.getUsername())){
+            return new ResponseEntity<>("Lối trùng username", HttpStatus.OK);
+        }
+        else{
+            service.saveUser(user);
+        }
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/save").toUriString());
+            return ResponseEntity.created(uri).body(user);
     }
 
     @PutMapping("update/{id}")

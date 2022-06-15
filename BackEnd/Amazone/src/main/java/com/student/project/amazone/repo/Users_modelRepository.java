@@ -15,4 +15,6 @@ public interface Users_modelRepository extends JpaRepository<Users_model, Long> 
 
     @Query(value = "SELECT * FROM users_model WHERE id = ?1",nativeQuery = true)
     public Users_model findUserById(Long id);
+
+    Boolean existsByUsername(String username);
 }

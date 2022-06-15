@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/order")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
-@Slf4j
+
 public class Order_controller extends AbstractControllerOrder {
     @Autowired
     private Order_service service;

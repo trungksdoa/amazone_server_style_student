@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Slf4j
 public class Order_implement implements Order_service {
 
     public final Order_modelRepository modelRepository;
