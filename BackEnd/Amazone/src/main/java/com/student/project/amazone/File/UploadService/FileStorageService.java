@@ -92,4 +92,18 @@ public class FileStorageService {
             throw new FileNotFoundException("File not found " + fileName, ex);
         }
     }
+
+    public Path getFilePath(String filename){
+        try {
+            Path filePath = this.fileStorageLocation.resolve(filename).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return filePath;
+            } else {
+                throw new FileNotFoundException("File not found " + filename);
+            }
+        } catch (MalformedURLException ex) {
+            throw new FileNotFoundException("File not found " + filename, ex);
+        }
+    }
 }

@@ -15,7 +15,6 @@ public interface Cart_service {
 
     cartModel update(String itemId, Long userId, Map<Object, Object> fields);
 
-    cartItem updateCartItem(cartItem cartitem);
     void ItemDelete(long CartId, List<Long> itemId);
     List<cartModel> cartList();
 

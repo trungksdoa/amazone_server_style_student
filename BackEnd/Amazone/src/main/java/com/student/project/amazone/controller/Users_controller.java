@@ -2,6 +2,7 @@ package com.student.project.amazone.controller;
 
 
 import com.student.project.amazone.entity.Users_model;
+import com.student.project.amazone.entity.cartModel;
 import com.student.project.amazone.service.Users_service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/user/")
@@ -16,6 +19,10 @@ import java.net.URI;
 @CrossOrigin(origins = "http://localhost:4200")
 public class Users_controller {
     private final Users_service service;
+
+
+    Map<Object, Object> respone = new HashMap<>();
+    cartModel cartData = new cartModel();
 
     @GetMapping
     public ResponseEntity<String> getUsers() {
@@ -39,7 +46,7 @@ public class Users_controller {
         Users_model usersModel = service.findUserByName(username);
         if (usersModel != null) {
             usersModel.setBanned(true);
-            if (service.saveUser(usersModel).isBanned()){
+            if (service.saveUser(usersModel).isBanned()) {
                 return ResponseEntity.ok().body(true);
             }
         }
@@ -58,11 +65,13 @@ public class Users_controller {
     }
 
     @PostMapping("login")
-    public ResponseEntity<Users_model.userDto> loginUsers(@RequestBody Users_model user) {
+    public ResponseEntity<Map<Object,Object>> loginUsers(@RequestBody Users_model user) {
         if (service.isLoggedIn(user)) {
 
             Users_model.userDto userDto = new Users_model.userDto(service.findUserByName(user.getUsername()));
-            return ResponseEntity.ok().body(userDto);
+            respone.put("user", userDto);
+            respone.put("message", "Đăng nhập thành công, xin chào " + userDto.getUsername());
+            return ResponseEntity.ok().body(respone);
         } else {
             throw new IllegalStateException("Login fails");
         }

@@ -1,9 +1,12 @@
 package com.student.project.amazone.service;
 
+import com.student.project.amazone.File.UploadService.FileStorageService;
 import com.student.project.amazone.entity.Banner_model;
 import com.student.project.amazone.repo.Banner_modelRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,8 +14,11 @@ import java.util.stream.Collectors;
 public class Banner_implement implements Banner_service {
     private final Banner_modelRepository service;
 
-    public Banner_implement(Banner_modelRepository service) {
+    private final FileStorageService filestore;
+
+    public Banner_implement(Banner_modelRepository service, FileStorageService filestore) {
         this.service = service;
+        this.filestore = filestore;
     }
 
     @Override
@@ -24,4 +30,16 @@ public class Banner_implement implements Banner_service {
     public Banner_model SaveOrUpdate(Banner_model banner) {
         return service.save(banner);
     }
+
+    @Override
+    public void delete_file(String fileName) {
+        Path filePath = filestore.getFilePath(fileName);
+        Banner_model banner = service.findByName(fileName);
+        File file = new File(filePath.toString());
+
+        service.delete(banner);
+        file.delete();
+
+    }
+
 }
