@@ -1,6 +1,5 @@
 package com.student.project.amazone.service;
 
-import com.student.project.amazone.entity.Catagory_model;
 import com.student.project.amazone.entity.Users_model;
 import com.student.project.amazone.repo.Users_modelRepository;
 import com.sun.jersey.api.NotFoundException;
@@ -23,21 +22,14 @@ public class Users_implement implements Users_service {
     public boolean isLoggedIn(Users_model usersModel) {
         Users_model users_model = service.findUserByUsernameAndPassword(usersModel.getUsername(), usersModel.getPassword());
         if (users_model != null) return true;
-
         throw new NotFoundException("Account not found");
     }
 
     @Override
     public Users_model saveUser(Users_model user) {
-
-            return service.save(user);
-
-
-    }
-    @Override
-    public Users_model updateUser(Users_model user) {
         return service.save(user);
     }
+
     @Override
     public List<Users_model> findAllUsers() {
         return service.findAll().stream().collect(Collectors.toList());

@@ -6,11 +6,15 @@ import com.student.project.amazone.File.payload.Response;
 import com.student.project.amazone.entity.Banner_model;
 import com.student.project.amazone.service.Banner_service;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 
@@ -18,6 +22,7 @@ import java.util.Random;
 @RequestMapping("/api/v2/banner")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:9111")
+@Slf4j
 public class Banner_controller {
     private final FileStorageService storeService;
     private final Banner_service BannerService;
@@ -62,22 +67,19 @@ public class Banner_controller {
                 file.getContentType(), file.getSize());
     }
 
-//    @PostMapping("/uploadMultipleFiles")
-//    public List<Response> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-//
-//        int leftLimit = 97; // letter 'a'
-//        int rightLimit = 122; // letter 'z'
-//        int targetStringLength = 15;
-//        Random random = new Random();
-//
-//        String generatedString = random.ints(leftLimit, rightLimit + 1)
-//                .limit(targetStringLength)
-//                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-//                .toString();
-//
-//        return Arrays.asList(files)
-//                .stream()
-//                .map(file -> uploadFile(file,generatedString))
-//                .collect(Collectors.toList());
-//    }
+    @PutMapping
+    public ResponseEntity<Banner_model> update(@RequestParam("file") MultipartFile file,@RequestParam String fileName){
+
+
+        storeService.storeFileBanner(file,fileName);
+
+        return null;
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Banner_model> delete(@RequestParam String fileName){
+//        storeService.getFilePath(file, fileName + "." + getType[1]);
+        BannerService.delete_file(fileName);
+        return null;
+    }
 }

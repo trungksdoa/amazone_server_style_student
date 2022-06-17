@@ -53,88 +53,93 @@ public class Cart_implement implements Cart_service {
 
     @Override
     public cartModel save(cartModel newCart) {
-        cartModel cartExist = cartByUserId(newCart.getUserId().getId());
-        if (cartExist != null) {
-            for (int i = 0; i < newCart.getCartItem().size(); i++) {
-                final cartItem element = newCart.getCartItem().get(i);
-                cartItem itemInCart = cartExist.getCartItem().stream()
-                        .filter(x -> element.getProductItem().getId().equals(x.getProductItem().getId()))
-                        .findAny()
-                        .orElse(null);
+        try {
+            cartModel cartExist = cartByUserId(newCart.getUserId().getId());
+            if (cartExist != null) {
+                for (int i = 0; i < newCart.getCartItem().size(); i++) {
+                    final cartItem element = newCart.getCartItem().get(i);
+                    cartItem itemInCart = cartExist.getCartItem().stream()
+                            .filter(x -> element.getProductItem().getId().equals(x.getProductItem().getId()))
+                            .findAny()
+                            .orElse(null);
 
-                if (itemInCart != null) {
-                    itemInCart.setQuantityItemNumber(element.getQuantityItemNumber());
-                    itemInCart.setProductPrice(element.getProductPrice());
-                } else {
-                    cartExist.getCartItem().add(element);
+                    if (itemInCart != null) {
+                        itemInCart.setQuantityItemNumber(element.getQuantityItemNumber());
+                        itemInCart.setProductPrice(element.getProductPrice());
+                    } else {
+                        cartExist.getCartItem().add(element);
+                    }
+                    Long totalAmount = cartExist.getCartItem().stream().map(ob -> ob.getProductPrice())
+                            .reduce(0L, (a, b) -> a + b);
+                    cartExist.setTotalPrice(totalAmount);
                 }
-                Long totalAmount = cartExist.getCartItem().stream().map(ob -> ob.getProductPrice())
-                        .reduce(0L, (a, b) -> a + b);
-                cartExist.setTotalPrice(totalAmount);
+                return cart_modelRepository.save(cartExist);
             }
-            return cart_modelRepository.save(cartExist);
+            Long totalAmount = newCart.getCartItem().stream().map(ob -> ob.getProductPrice())
+                    .reduce(0L, (a, b) -> a + b);
+            newCart.setTotalPrice(totalAmount);
+            return cart_modelRepository.save(newCart);
+        } catch (Exception ex) {
+            throw new IllegalStateException("Lỗi !! Không tìm thấy người dùng có ID là " + newCart.getUserId().getId());
         }
-        Long totalAmount = newCart.getCartItem().stream().map(ob -> ob.getProductPrice())
-                .reduce(0L, (a, b) -> a + b);
-        newCart.setTotalPrice(totalAmount);
-        return cart_modelRepository.saveAndFlush(newCart);
     }
 
     @Override
     public cartModel update(String itemId, Long userId, Map<Object, Object> fields) {
-        cartModel cartExist = cartByUserId(userId);
-        for (int i = 0; i < cartExist.getCartItem().size(); i++) {
-            final cartItem element = cartExist.getCartItem().get(i);
-            if (element.getProductItem().getId().equals(Long.valueOf(itemId))) {
-                fields.forEach((key, value) -> {
-                    Field field = ReflectionUtils.findField(cartItem.class, (String) key);
-                    field.setAccessible(true);
-                    if (field.getName().equals("productPrice")) {
-                        ReflectionUtils.setField(field, element, Long.parseLong(value.toString()));
-                    } else {
-                        ReflectionUtils.setField(field, element, value);
-                    }
-                });
+        try {
+            cartModel cartExist = cartByUserId(userId);
+            for (int i = 0; i < cartExist.getCartItem().size(); i++) {
+                final cartItem element = cartExist.getCartItem().get(i);
+                if (element.getProductItem().getId().equals(Long.valueOf(itemId))) {
+                    fields.forEach((key, value) -> {
+                        Field field = ReflectionUtils.findField(cartItem.class, (String) key);
+                        field.setAccessible(true);
+                        if (field.getName().equals("productPrice")) {
+                            ReflectionUtils.setField(field, element, Long.parseLong(value.toString()));
+                        } else {
+                            ReflectionUtils.setField(field, element, value);
+                        }
+                    });
+                }
+
+                cartItemDtoRepository.save(element);
             }
-            ;
-
-            cartItemDtoRepository.save(element);
+            Long totalAmount = cartExist.getCartItem().stream().map(ob -> ob.getProductPrice())
+                    .reduce(0l, (a, b) -> a + b);
+            cartExist.setTotalPrice(totalAmount);
+            return cart_modelRepository.save(cartExist);
+        } catch (Exception ex) {
+            throw new IllegalStateException("Có lỗi xảy ra ,vui lòng thử lại sau !");
         }
-        Long totalAmount = cartExist.getCartItem().stream().map(ob -> ob.getProductPrice())
-                .reduce(0l, (a, b) -> a + b);
-        cartExist.setTotalPrice(totalAmount);
-        return cart_modelRepository.save(cartExist);
-    }
-
-
-    @Override
-    public cartItem updateCartItem(cartItem cartitem) {
-        return cartItemDtoRepository.saveAndFlush(cartitem);
     }
 
     @Override
     public void ItemDelete(long CartId, List<Long> itemId) {
-        cartModel cartModel = cart_modelRepository.getById(CartId);
-        if (inCartItem(cartModel)) {
+        try {
+            cartModel cartModel = cart_modelRepository.getById(CartId);
+            if (inCartItem(cartModel)) {
 
-            List<cartItem> deletedItems = cartModel.getCartItem().stream()
-                    .filter(e -> itemId.contains(e.getProductItem().getId()))
-                    .collect(Collectors.toList());
+                List<cartItem> deletedItems = cartModel.getCartItem().stream()
+                        .filter(e -> itemId.contains(e.getProductItem().getId()))
+                        .collect(Collectors.toList());
 
 
-            List<cartItem> copyData = cartModel.getCartItem();
-            copyData.removeAll(deletedItems);
-            if (copyData.size() == 0) {
-                cartModel.setTotalPrice(0L);
-            } else {
-                Long totalAmount = cartModel.getCartItem().stream()
-                        .filter(e -> !itemId.contains(e.getId()))
-                        .map(ob -> ob.getProductPrice())
-                        .reduce(0l, (a, b) -> a + b);
-                cartModel.setTotalPrice(totalAmount);
+                List<cartItem> copyData = cartModel.getCartItem();
+                copyData.removeAll(deletedItems);
+                if (copyData.size() == 0) {
+                    cartModel.setTotalPrice(0L);
+                } else {
+                    Long totalAmount = cartModel.getCartItem().stream()
+                            .filter(e -> !itemId.contains(e.getId()))
+                            .map(ob -> ob.getProductPrice())
+                            .reduce(0l, (a, b) -> a + b);
+                    cartModel.setTotalPrice(totalAmount);
+                }
+
+                cartModel.getCartItem().removeAll(deletedItems);
             }
-
-            cartModel.getCartItem().removeAll(deletedItems);
+        }catch(Exception ex){
+            throw new IllegalStateException(ex.getMessage());
         }
     }
 

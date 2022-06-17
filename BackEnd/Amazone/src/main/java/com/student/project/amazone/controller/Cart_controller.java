@@ -4,6 +4,7 @@ import com.student.project.amazone.entity.cartModel;
 import com.student.project.amazone.service.Cart_service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,8 @@ public class Cart_controller {
     @Autowired
     private Cart_service service;
 
+    Map<Object, Object> respone = new HashMap<>();
+    cartModel cartData = new cartModel();
 
     @GetMapping
     public ResponseEntity<cartModel> userMap(@RequestParam String userId) {
@@ -47,28 +50,58 @@ public class Cart_controller {
 
 
     @PutMapping
-    public ResponseEntity<cartModel> add(@RequestBody cartModel requestCart) {
-        return ResponseEntity.ok().body(service.save(requestCart));
+    public ResponseEntity<Map<Object, Object>> add(@RequestBody cartModel requestCart) {
+
+        String message = "Thêm thành công vào giỏ hàng";
+
+        HttpStatus status = HttpStatus.OK;
+        try {
+            cartData = service.save(requestCart);
+            respone.put("uniqueItemInCart", cartData.getCartItem().size() + "");
+            respone.put("cartData", cartData);
+            respone.put("message", message);
+        } catch (Exception ex) {
+            respone.put("message", ex.getMessage());
+            status = HttpStatus.REQUEST_TIMEOUT;
+        }
+        return ResponseEntity.status(status).body(respone);
     }
 
     @PatchMapping
-    public ResponseEntity<cartModel> patch(@RequestParam String userId, @RequestParam String itemId, @RequestBody Map<Object, Object> fields) {
-        return ResponseEntity.ok().body(service.update(itemId, Long.valueOf(userId), fields));
+    public ResponseEntity<Map<Object, Object>> patch(@RequestParam String userId, @RequestParam String itemId, @RequestBody Map<Object, Object> fields) {
+        String message = "Cập nhật thành công";
+        HttpStatus status = HttpStatus.OK;
+        try {
+            cartData = service.update(itemId, Long.valueOf(userId), fields);
+            respone.put("uniqueItemInCart", cartData.getCartItem().size() + "");
+            respone.put("cartData", cartData);
+            respone.put("message", message);
+        } catch (Exception ex) {
+            respone.put("message", ex.getMessage());
+            status = HttpStatus.REQUEST_TIMEOUT;
+        }
+        return ResponseEntity.status(status).body(respone);
     }
 
     @DeleteMapping
-    public ResponseEntity<Map<String, String>> delete(@RequestParam String CartId, @RequestBody List<Long> Itemid) {
+    public ResponseEntity<Map<Object, Object>> delete(@RequestParam String CartId, @RequestBody List<Long> Itemid) {
+        String message = "Xóa thành công";
+        HttpStatus status = HttpStatus.OK;
+        try {
+            cartData = service.cartByCartId(Long.parseLong(CartId));
 
-
-        cartModel cartModel = service.cartByCartId(Long.parseLong(CartId));
-
-        if(cartModel.getCartItem().size() != 0){
-            service.ItemDelete(valueOf(CartId), Itemid);
+            if (cartData.getCartItem().size() != 0) {
+                service.ItemDelete(valueOf(CartId), Itemid);
+            }
+            respone.put("uniqueItemInCart", cartData.getCartItem().size() + "");
+            respone.put("message", message);
+        } catch (Exception ex) {
+            message = ex.getMessage();
+            respone.put("message", message);
+            status = HttpStatus.REQUEST_TIMEOUT;
         }
-        Map<String, String> fields = new HashMap<String, String>();
+        return ResponseEntity.status(status).body(respone);
 
-        fields.put("uniqueItemInCart", cartModel.getCartItem().size() + "");
-        fields.put("message", "Delete item in cart success");
-        return ResponseEntity.ok().body(fields);
+
     }
 }
