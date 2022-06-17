@@ -1,5 +1,6 @@
 package com.student.project.amazone.service;
 
+import com.student.project.amazone.entity.Catagory_model;
 import com.student.project.amazone.entity.Users_model;
 import com.student.project.amazone.repo.Users_modelRepository;
 import com.sun.jersey.api.NotFoundException;
@@ -33,7 +34,10 @@ public class Users_implement implements Users_service {
 
 
     }
-
+    @Override
+    public Users_model updateUser(Users_model user) {
+        return service.save(user);
+    }
     @Override
     public List<Users_model> findAllUsers() {
         return service.findAll().stream().collect(Collectors.toList());
