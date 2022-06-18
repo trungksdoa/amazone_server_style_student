@@ -51,4 +51,9 @@ public class Users_implement implements Users_service {
     public Users_model findUserByName(String username) {
         return service.findByUsername(username);
     }
+
+    @Override
+    public Users_model updateUser(Users_model user) {
+        return null;
+    }
 }
