@@ -18,11 +18,25 @@ public class Users_implement implements Users_service {
         this.service = service;
     }
 
+
     @Override
-    public boolean isLoggedIn(Users_model usersModel) {
+    public Users_model isLoggedIn(Users_model usersModel) {
         Users_model users_model = service.findUserByUsernameAndPassword(usersModel.getUsername(), usersModel.getPassword());
-        if (users_model != null) return true;
-        throw new NotFoundException("Không tìm thấy tài khoản");
+        if (users_model != null) {
+            return users_model;
+        } else {
+            throw new NullPointerException("Không tìm thấy tài khoản " + usersModel.getUsername());
+        }
+    }
+
+    @Override
+    public Users_model isLoggedInAdmin(Users_model usersModel) {
+        Users_model users_model = service.findUserByUsernameAndPasswordAndIsAdmin(usersModel.getUsername(), usersModel.getPassword());
+        if (users_model != null) {
+            return users_model;
+        } else {
+            throw new NullPointerException("Không tìm thấy tài khoản " + usersModel.getUsername());
+        }
     }
 
     @Override
@@ -49,6 +63,8 @@ public class Users_implement implements Users_service {
 
     @Override
     public Users_model findUserByName(String username) {
-        return service.findByUsername(username);
+        if (service.findByUsername(username) != null)
+            return service.findByUsername(username);
+        throw new NotFoundException("Không tìm thấy tài khoản " + username);
     }
 }

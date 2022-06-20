@@ -2,13 +2,18 @@ package com.student.project.amazone.Admin_controller;
 
 
 import com.student.project.amazone.entity.Users_model;
+import com.student.project.amazone.entity.cartModel;
 import com.student.project.amazone.service.Users_service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v2/user/")
@@ -17,9 +22,12 @@ import java.net.URI;
 public class Users_controller_mn {
     private final Users_service service;
 
+    Map<Object, Object> respone = new HashMap<>();
+    cartModel cartData = new cartModel();
+
     @GetMapping
-    public ResponseEntity<String> getUsers() {
-        return ResponseEntity.ok().body("Login success");
+    public ResponseEntity<List<Users_model>> getUsers() {
+        return ResponseEntity.ok().body(service.findAllUsers());
     }
 
 
@@ -58,14 +66,17 @@ public class Users_controller_mn {
     }
 
     @PostMapping("login")
-    public ResponseEntity<Users_model.userDto> loginUsers(@RequestBody Users_model user) {
-        if (service.isLoggedIn(user)) {
-            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/login").toUriString());
-            Users_model.userDto userDto = new Users_model.userDto(service.findUserByName(user.getName()));
-            return ResponseEntity.created(uri).body(userDto);
-        } else {
-            throw new IllegalStateException("Login fails");
+    public ResponseEntity<Map<Object, Object>> loginUsers(@RequestBody Users_model user) {
+        HttpStatus status = HttpStatus.OK;
+        try {
+            Users_model.userDto userDto = new Users_model.userDto(service.isLoggedInAdmin(user));
+            respone.put("user", userDto);
+            respone.put("message", "Đăng nhập thành công, xin chào " + userDto.getUsername());
+        } catch (Exception ex) {
+            respone.put("message", ex.getMessage());
+            status = HttpStatus.NOT_FOUND;
         }
+        return ResponseEntity.status(status).body(respone);
     }
 
     @PostMapping("save")
