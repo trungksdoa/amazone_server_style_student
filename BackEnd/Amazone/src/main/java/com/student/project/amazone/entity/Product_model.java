@@ -7,6 +7,8 @@ import javax.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.PERSIST;
@@ -51,6 +53,10 @@ public class Product_model {
     @ManyToOne(cascade = PERSIST)
     @JoinColumn(name = "cata_product")
         private Catagory_model catagory;
+
+    @ManyToOne(cascade = PERSIST)
+    @JoinColumn(name = "order_product")
+    private orderItem_model orderItemModel;
 
     public Product_model(String name, Long price, Catagory_model catagory) {
         this.name = name;

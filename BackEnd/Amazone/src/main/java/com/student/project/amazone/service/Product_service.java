@@ -19,4 +19,6 @@ public interface Product_service {
     public void deleteProduct(Long id);
 
     public Product_model findUserByName(String name);
+
+    public List<Product_model>  findProduct_modelByOrderId();
 }

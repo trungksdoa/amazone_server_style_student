@@ -62,5 +62,11 @@ public class ServiceProduct {
 		repositoryProduct.deleteById(id);
 	}
 
+	public List<Product_model> findProduct_modelByOrderId(){
+		List<Product_model> result = new ArrayList<Product_model>();
+		repositoryProduct.findProduct_modelByOrderId().forEach(result::add);
+		return result;
+	}
+
 
 }

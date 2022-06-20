@@ -21,6 +21,9 @@ public interface Product_modelRepository extends JpaRepository<Product_model, Lo
 
     List<Product_model> findProduct_modelByNameContaining(@Param("name") String name);
 
+    @Query("FROM Product_model c  where count(c.orderItemModel.productItem)>=2 ")
+   List<Product_model> findProduct_modelByOrderId();
+
 //    @Query(value="select * from product u where u.name LIKE %:name%",nativeQuery=true)
 //    List<Product_model> findProductsByName(@Param("name") String name);
     @Query(value = "SELECT * FROM product_model WHERE id = ?1",

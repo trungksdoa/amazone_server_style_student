@@ -37,6 +37,11 @@ ControllerProduct {
 		List<Product_model> cata = serviceProduct.findAll();
 		return new ResponseEntity<>(cata, HttpStatus.OK);
 	}
+	@GetMapping("orderItem")
+	public ResponseEntity<List<Product_model>> findProduct_modelByOrderId() {
+		List<Product_model> cata = serviceProduct.findProduct_modelByOrderId();
+		return new ResponseEntity<>(cata, HttpStatus.OK);
+	}
 //	@GetMapping
 //	public ResponseEntity<List<Product_model>> findAll(@RequestParam(value = "name", defaultValue = "") String name) {
 //		return ResponseEntity.ok(serviceProduct.findProductsByName(name));
