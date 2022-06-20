@@ -5,6 +5,7 @@ import com.student.project.amazone.entity.Users_model;
 import com.student.project.amazone.entity.cartModel;
 import com.student.project.amazone.service.Users_service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -65,16 +66,18 @@ public class Users_controller {
     }
 
     @PostMapping("login")
-    public ResponseEntity<Map<Object,Object>> loginUsers(@RequestBody Users_model user) {
-        if (service.isLoggedIn(user)) {
-
-            Users_model.userDto userDto = new Users_model.userDto(service.findUserByName(user.getUsername()));
+    public ResponseEntity<Map<Object, Object>> loginUsers(@RequestBody Users_model user) {
+        HttpStatus status = HttpStatus.OK;
+        System.out.println("Ok");
+        try {
+            Users_model.userDto userDto = new Users_model.userDto(service.isLoggedIn(user));
             respone.put("user", userDto);
             respone.put("message", "Đăng nhập thành công, xin chào " + userDto.getUsername());
-            return ResponseEntity.ok().body(respone);
-        } else {
-            throw new IllegalStateException("Login fails");
+        } catch (NullPointerException ex) {
+            respone.put("message", ex.getMessage());
+            status = HttpStatus.NOT_FOUND;
         }
+        return ResponseEntity.status(status).body(respone);
     }
 
     @PostMapping("save")
