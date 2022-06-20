@@ -1,13 +1,10 @@
 package com.student.project.amazone.controller;
 
 
-import com.student.project.amazone.entity.Catagory_model;
 import com.student.project.amazone.entity.Users_model;
 import com.student.project.amazone.entity.cartModel;
 import com.student.project.amazone.service.Users_service;
-import com.sun.jersey.api.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -68,7 +65,7 @@ public class Users_controller {
     }
 
     @PostMapping("login")
-    public ResponseEntity<Map<Object, Object>> loginUsers(@RequestBody Users_model user) {
+    public ResponseEntity<Map<Object,Object>> loginUsers(@RequestBody Users_model user) {
         if (service.isLoggedIn(user)) {
 
             Users_model.userDto userDto = new Users_model.userDto(service.findUserByName(user.getUsername()));
@@ -76,7 +73,7 @@ public class Users_controller {
             respone.put("message", "Đăng nhập thành công, xin chào " + userDto.getUsername());
             return ResponseEntity.ok().body(respone);
         } else {
-            throw new NotFoundException("Login fails");
+            throw new IllegalStateException("Login fails");
         }
     }
 
@@ -89,17 +86,12 @@ public class Users_controller {
 
     @PutMapping("update/{id}")
     public ResponseEntity<Users_model> UpdateUser(@PathVariable String id, @RequestBody Users_model user) {
-        user.setId(Long.valueOf(id));
-        Users_model ues = service.findUserById(Long.valueOf(id));
-        ues.setName(user.getName());
-        ues.setAddress(user.getAddress());
-        ues.setUsername(user.getUsername());
-        ues.setPassword(user.getPassword());
-        ues.setPhone(user.getPhone());
-        service.saveUser(ues);
+        if (service.findUserById(Long.valueOf(id)) != null) {
+            user.setId(Long.valueOf(id));
+            service.saveUser(service.findUserByName(user.getUsername()));
+        }
+
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/save").toUriString());
         return ResponseEntity.created(uri).body(user);
     }
-
-
 }

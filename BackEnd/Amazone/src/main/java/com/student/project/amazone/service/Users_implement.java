@@ -22,7 +22,7 @@ public class Users_implement implements Users_service {
     public boolean isLoggedIn(Users_model usersModel) {
         Users_model users_model = service.findUserByUsernameAndPassword(usersModel.getUsername(), usersModel.getPassword());
         if (users_model != null) return true;
-        throw new NotFoundException("Account not found");
+        throw new NotFoundException("Không tìm thấy tài khoản");
     }
 
     @Override
@@ -50,10 +50,5 @@ public class Users_implement implements Users_service {
     @Override
     public Users_model findUserByName(String username) {
         return service.findByUsername(username);
-    }
-
-    @Override
-    public Users_model updateUser(Users_model user) {
-        return null;
     }
 }
