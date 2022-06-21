@@ -5,7 +5,6 @@ import com.student.project.amazone.dto.Order_modelInfo;
 import com.student.project.amazone.entity.ChartOption;
 import com.student.project.amazone.entity.Order_model;
 import com.student.project.amazone.repo.Order_modelRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,9 +37,7 @@ public class Order_implement implements Order_service {
 
     @Override
     public List<Order_model> getTop4OrderByUserId(long userId) {
-        modelRepository.findTop3LastOrderByUserId(userId).forEach(item->{
-            System.out.println(item.getCreateAt());
-        });
+        modelRepository.findTop3LastOrderByUserId(userId).forEach(item-> System.out.println(item.getCreateAt()));
         return modelRepository.findTop3LastOrderByUserId(userId);
     }
 
@@ -56,9 +53,7 @@ public class Order_implement implements Order_service {
     public ChartOption getValueIn12Month(long userId) {
         List<Order_modelInfo> results = modelRepository.getValueIn12Month(userId);
         final ChartOption[] chartOption = {null};
-        results.stream().forEach(item -> {
-             chartOption[0] = new ChartOption(item.getJan(), item.getMar(), item.getMay(), item.getJul(), item.getSep(), item.getNov(), item.getFeb(), item.getApr(), item.getJun(), item.getAug(), item.getOct(), item.getDec());
-        });
+        results.forEach(item -> chartOption[0] = new ChartOption(item.getJan(), item.getMar(), item.getMay(), item.getJul(), item.getSep(), item.getNov(), item.getFeb(), item.getApr(), item.getJun(), item.getAug(), item.getOct(), item.getDec()));
         return chartOption[0];
     }
 }

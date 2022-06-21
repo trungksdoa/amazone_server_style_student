@@ -1,6 +1,5 @@
 package com.student.project.amazone.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -13,7 +12,7 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 @Table(name = "devvn_tinhthanhpho")
 @Data
-public class A_City {
+public class A_City  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "matp  ", nullable = false)

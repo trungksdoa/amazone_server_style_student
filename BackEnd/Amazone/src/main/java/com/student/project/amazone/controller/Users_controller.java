@@ -2,7 +2,6 @@ package com.student.project.amazone.controller;
 
 
 import com.student.project.amazone.entity.Users_model;
-import com.student.project.amazone.entity.cartModel;
 import com.student.project.amazone.service.Users_service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ public class Users_controller {
 
 
     Map<Object, Object> respone = new HashMap<>();
-    cartModel cartData = new cartModel();
+
 
     @GetMapping
     public ResponseEntity<String> getUsers() {

@@ -6,8 +6,6 @@ import com.student.project.amazone.entity.ChartOption;
 import com.student.project.amazone.entity.Order_model;
 import com.student.project.amazone.service.Order_service;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +18,8 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 
 public class Order_controller extends AbstractControllerOrder {
-    @Autowired
+
     private Order_service service;
-    Long sum = 0L;
 
     @PostMapping
     public ResponseEntity<Order_model> saveOrder(@RequestBody Order_model requestOrder) {

@@ -20,7 +20,6 @@ import static java.lang.Long.valueOf;
 @CrossOrigin(origins = "http://localhost:4200")
 public class Cart_controller {
 
-    @Autowired
     private Cart_service service;
 
     Map<Object, Object> respone = new HashMap<>();
@@ -40,7 +39,7 @@ public class Cart_controller {
     @GetMapping("/mini")
     public ResponseEntity<Map<String, String>> mapMini(@RequestParam String userId) {
 
-        Map<String, String> fields = new HashMap<String, String>();
+        Map<String, String> fields = new HashMap<>();
 
         cartModel cartModel = service.cartByUserId(Long.valueOf(userId));
 

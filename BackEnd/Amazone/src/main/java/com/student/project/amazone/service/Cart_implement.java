@@ -45,7 +45,7 @@ public class Cart_implement implements Cart_service {
         return cartExist;
     }
 
-    @Override
+
     public cartItem cartByProductId(Long productId) {
         cartItem cartExist = cartItemDtoRepository.findByProductId(productId);
         return cartExist;
@@ -69,14 +69,14 @@ public class Cart_implement implements Cart_service {
                     } else {
                         cartExist.getCartItem().add(element);
                     }
-                    Long totalAmount = cartExist.getCartItem().stream().map(ob -> ob.getProductPrice())
-                            .reduce(0L, (a, b) -> a + b);
+                    Long totalAmount = cartExist.getCartItem().stream().map(cartItem::getProductPrice)
+                            .reduce(0L, Long::sum);
                     cartExist.setTotalPrice(totalAmount);
                 }
                 return cart_modelRepository.save(cartExist);
             }
-            Long totalAmount = newCart.getCartItem().stream().map(ob -> ob.getProductPrice())
-                    .reduce(0L, (a, b) -> a + b);
+            Long totalAmount = newCart.getCartItem().stream().map(cartItem::getProductPrice)
+                    .reduce(0L, Long::sum);
             newCart.setTotalPrice(totalAmount);
             return cart_modelRepository.save(newCart);
         } catch (Exception ex) {
@@ -104,8 +104,8 @@ public class Cart_implement implements Cart_service {
 
                 cartItemDtoRepository.save(element);
             }
-            Long totalAmount = cartExist.getCartItem().stream().map(ob -> ob.getProductPrice())
-                    .reduce(0l, (a, b) -> a + b);
+            Long totalAmount = cartExist.getCartItem().stream().map(cartItem::getProductPrice)
+                    .reduce(0L, Long::sum);
             cartExist.setTotalPrice(totalAmount);
             return cart_modelRepository.save(cartExist);
         } catch (Exception ex) {
@@ -131,8 +131,8 @@ public class Cart_implement implements Cart_service {
                 } else {
                     Long totalAmount = cartModel.getCartItem().stream()
                             .filter(e -> !itemId.contains(e.getId()))
-                            .map(ob -> ob.getProductPrice())
-                            .reduce(0l, (a, b) -> a + b);
+                            .map(cartItem::getProductPrice)
+                            .reduce(0L, Long::sum);
                     cartModel.setTotalPrice(totalAmount);
                 }
 

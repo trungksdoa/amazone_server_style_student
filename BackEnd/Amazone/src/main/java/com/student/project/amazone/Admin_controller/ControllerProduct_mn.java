@@ -7,9 +7,7 @@ import com.student.project.amazone.entity.Catagory_model;
 import com.student.project.amazone.entity.Product_model;
 import com.student.project.amazone.service.ServiceProduct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,25 +24,17 @@ import java.util.Random;
 public class
 ControllerProduct_mn {
 
-    String subPath = "products";
 
-    @Autowired
     ServiceProduct serviceProduct;
 
 
-    @Autowired
     private FileStorageService fileStorageService;
 
     @GetMapping("all")
-    public ResponseEntity<List<Product_model>> findAllCategory() {
-        List<Product_model> cata = serviceProduct.findAll();
-        return new ResponseEntity<>(cata, HttpStatus.OK);
+    public ResponseEntity<List<Product_model>> findAllProduct() {
+        List<Product_model> product = serviceProduct.findAll();
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
-
-//    @GetMapping
-//    public ResponseEntity<List<Product_model>> findAll(@RequestParam(value = "name", defaultValue = "") String name) {
-//        return ResponseEntity.ok(serviceProduct.findProductsByName(name));
-//    }
 
     public String getRamdom(){
         int leftLimit = 97; // letter 'a'
@@ -72,7 +62,7 @@ ControllerProduct_mn {
         ObjectMapper objectMapper = new ObjectMapper();
 
 // Deserialization into the `Employee` class
-        Product_model emp = null;
+        Product_model emp ;
         emp = objectMapper.readValue(product, Product_model.class);
         System.out.println(emp.getCatagory());
         Catagory_model cata = new Catagory_model();
@@ -92,7 +82,7 @@ ControllerProduct_mn {
         ObjectMapper objectMapper = new ObjectMapper();
 
         // Deserialization into the `Employee` class
-        Product_model emp = null;
+        Product_model emp ;
         emp = objectMapper.readValue(product, Product_model.class);
 
         Product_model getFromData = serviceProduct.findById(emp.getId()).get();
@@ -119,13 +109,6 @@ ControllerProduct_mn {
         return ResponseEntity.ok(product.get());
     }
 
-//    @PutMapping("/update")
-//    public ResponseEntity<Product_model> updateCategory(@RequestBody Product_model cata) {
-//        Product_model findProduct = serviceProduct.findById(cata.getId()).get();
-//        cata.setImageurl(findProduct.getImageurl());
-//        Product_model updateCategory = serviceProduct.save(cata);
-//        return new ResponseEntity<>(updateCategory, HttpStatus.OK);
-//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id) {

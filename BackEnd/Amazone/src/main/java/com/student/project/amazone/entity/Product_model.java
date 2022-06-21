@@ -4,13 +4,7 @@ package com.student.project.amazone.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.GenerationType.AUTO;
 

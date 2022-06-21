@@ -2,12 +2,14 @@ package com.student.project.amazone.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-public class orderItem_model {
+@EqualsAndHashCode(callSuper = true)
+public class orderItem_model extends DateAbstract {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)

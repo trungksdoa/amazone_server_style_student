@@ -5,5 +5,5 @@ import com.student.project.amazone.entity.A_City;
 import java.util.List;
 
 public interface VietNam_service {
-  public  List<A_City> citys_list();
+    List<A_City> citys_list();
 }

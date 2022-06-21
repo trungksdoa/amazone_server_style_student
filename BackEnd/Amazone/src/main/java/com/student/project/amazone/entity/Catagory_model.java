@@ -1,17 +1,8 @@
 package com.student.project.amazone.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import javax.persistence.*;
-
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Set;
 
 import static javax.persistence.GenerationType.AUTO;
 

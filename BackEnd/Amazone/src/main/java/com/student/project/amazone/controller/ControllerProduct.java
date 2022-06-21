@@ -7,7 +7,6 @@ import com.student.project.amazone.entity.Product_model;
 
 import com.student.project.amazone.service.ServiceProduct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +23,12 @@ import java.util.Optional;
 public class
 ControllerProduct {
 
-	String subPath = "products";
 
-	@Autowired
+
 	ServiceProduct serviceProduct;
 
-
-	@Autowired
 	private FileStorageService fileStorageService;
+
 	@GetMapping("all")
 	public ResponseEntity<List<Product_model>> findAllCategory() {
 		List<Product_model> cata = serviceProduct.findAll();
@@ -42,11 +39,6 @@ ControllerProduct {
 		List<Product_model> cata = serviceProduct.findProduct_modelByOrderId();
 		return new ResponseEntity<>(cata, HttpStatus.OK);
 	}
-//	@GetMapping
-//	public ResponseEntity<List<Product_model>> findAll(@RequestParam(value = "name", defaultValue = "") String name) {
-//		return ResponseEntity.ok(serviceProduct.findProductsByName(name));
-//	}
-
 
 	@PostMapping("save")
 	public ResponseEntity create(@RequestParam(name = "image",required = false) Optional<MultipartFile> file, @RequestParam("product") String product) {

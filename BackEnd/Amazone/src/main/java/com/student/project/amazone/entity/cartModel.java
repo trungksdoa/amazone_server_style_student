@@ -1,6 +1,5 @@
 package com.student.project.amazone.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import com.student.project.amazone.entity.cartItem;
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
@@ -33,12 +31,6 @@ public class cartModel extends DateAbstract  {
     @JsonProperty("TotalPrice")
     private Long TotalPrice;
 
-    public cartModel(Long userId) {
-        super();
-        Users_model user = new Users_model();
-        user.setId(userId);
-        this.userId = user;
-    }
     public cartModel() {
     }
 

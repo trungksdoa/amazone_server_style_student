@@ -38,8 +38,6 @@ public abstract class AbstractControllerOrder {
         return null;
     }
 
-
-
     @RequestMapping(value = "/status", params = "change", method = RequestMethod.PATCH)
     public ResponseEntity<Order_model> updateStatus(
             @RequestParam(name = "change", required = false) Optional<Integer> change,

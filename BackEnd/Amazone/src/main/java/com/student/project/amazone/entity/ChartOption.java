@@ -2,7 +2,7 @@ package com.student.project.amazone.entity;
 
 import lombok.Data;
 
-import javax.persistence.*;
+
 
 
 @Data

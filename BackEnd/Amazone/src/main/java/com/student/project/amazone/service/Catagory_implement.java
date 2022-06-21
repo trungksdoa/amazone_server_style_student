@@ -3,10 +3,7 @@ package com.student.project.amazone.service;
 
 import com.student.project.amazone.entity.Catagory_model;
 import com.student.project.amazone.repo.Catagory_modelRespository;
-import com.sun.jersey.api.ConflictException;
 import com.sun.jersey.api.NotFoundException;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +41,7 @@ public class Catagory_implement implements Catagory_service{
     public void deleteCatagory(Long id){
          service.deleteCatagoryById(id);
     }
-    @Override
+
     public Catagory_model findUserByName(String name){
         return service.findByName(name);
     }

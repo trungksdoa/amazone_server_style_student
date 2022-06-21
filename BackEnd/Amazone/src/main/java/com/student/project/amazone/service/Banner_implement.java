@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class Banner_implement implements Banner_service {
@@ -23,7 +24,7 @@ public class Banner_implement implements Banner_service {
 
     @Override
     public List<Banner_model> getList() {
-        return service.findAll().stream().collect(Collectors.toList());
+        return new ArrayList<>(service.findAll());
     }
 
     @Override

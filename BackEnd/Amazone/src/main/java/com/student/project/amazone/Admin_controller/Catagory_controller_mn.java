@@ -32,8 +32,6 @@ public class Catagory_controller_mn {
         Catagory_model cata = service.findUserById(id);
         return new ResponseEntity<>(cata, HttpStatus.OK);
     }
-
-
     @PutMapping("/update")
     public ResponseEntity<Catagory_model> updateCategory(@RequestBody Catagory_model cata) {
         Catagory_model updateCategory = service.updateCategory(cata);

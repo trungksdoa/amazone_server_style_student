@@ -23,7 +23,6 @@ public class Users_controller_mn {
     private final Users_service service;
 
     Map<Object, Object> respone = new HashMap<>();
-    cartModel cartData = new cartModel();
 
     @GetMapping
     public ResponseEntity<List<Users_model>> getUsers() {

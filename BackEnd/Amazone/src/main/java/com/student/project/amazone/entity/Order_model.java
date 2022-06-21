@@ -57,13 +57,6 @@ public class Order_model extends DateAbstract {
     @JsonProperty("userId")
     private Users_model userId;
 
-    public Order_model(Long userId) {
-        super();
-        Users_model user = new Users_model();
-        user.setId(userId);
-        this.userId = user;
-    }
-
     public Order_model() {
 
     }
