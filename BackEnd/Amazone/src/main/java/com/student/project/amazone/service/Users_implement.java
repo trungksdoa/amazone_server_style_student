@@ -2,8 +2,8 @@ package com.student.project.amazone.service;
 
 import com.student.project.amazone.entity.Users_model;
 import com.student.project.amazone.repo.Users_modelRepository;
+import com.sun.jersey.api.ConflictException;
 import com.sun.jersey.api.NotFoundException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 @Transactional
 public class Users_implement implements Users_service {
 
-    public final Users_modelRepository service;
+    private final Users_modelRepository service;
 
     public Users_implement(Users_modelRepository service) {
         this.service = service;
-}
+    }
 
     @Override
     public Users_model isLoggedIn(Users_model usersModel) {
@@ -38,8 +38,18 @@ public class Users_implement implements Users_service {
     }
 
     @Override
-    public Users_model saveUser(Users_model user) {
-        return service.save(user);
+    public Users_model updateOrSave(Users_model usersModel) {
+        return service.save(usersModel);
+    }
+
+    @Override
+    public Users_model registerUser(Users_model user) {
+        Users_model usersModel = service.findByUsername(user.getUsername());
+        if (usersModel == null) {
+            return service.save(user);
+        }else{
+            throw new IllegalStateException("Tài khoản đã tồn tại");
+        }
     }
 
     @Override

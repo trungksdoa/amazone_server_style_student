@@ -4,6 +4,7 @@ import com.student.project.amazone.entity.cartItem;
 import com.student.project.amazone.entity.cartModel;
 import com.student.project.amazone.repo.CartItemDtoRepository;
 import com.student.project.amazone.repo.Cart_modelRepository;
+import com.sun.jersey.api.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -41,10 +42,16 @@ public class Cart_implement implements Cart_service {
 
     @Override
     public cartModel cartByUserId(Long userId) {
-        cartModel cartExist = cart_modelRepository.findCart_modelByUserId(userId);
-        return cartExist;
+        if (cart_modelRepository.findCart_modelByUserId(userId) != null) {
+            return cart_modelRepository.findCart_modelByUserId(userId);
+        } else {
+            throw new NotFoundException("Không tìm thấy giỏ hàng");
+        }
     }
 
+    public cartModel getCartByUser(Long userId) {
+        return cart_modelRepository.findCart_modelByUserId(userId);
+    }
 
     public cartItem cartByProductId(Long productId) {
         cartItem cartExist = cartItemDtoRepository.findByProductId(productId);
@@ -54,7 +61,7 @@ public class Cart_implement implements Cart_service {
     @Override
     public cartModel save(cartModel newCart) {
         try {
-            cartModel cartExist = cartByUserId(newCart.getUserId().getId());
+            cartModel cartExist = getCartByUser(newCart.getUserId().getId());
             if (cartExist != null) {
                 for (int i = 0; i < newCart.getCartItem().size(); i++) {
                     final cartItem element = newCart.getCartItem().get(i);
@@ -64,6 +71,7 @@ public class Cart_implement implements Cart_service {
                             .orElse(null);
 
                     if (itemInCart != null) {
+                        System.out.println("Quantity " + element.getQuantityItemNumber());
                         itemInCart.setQuantityItemNumber(element.getQuantityItemNumber());
                         itemInCart.setProductPrice(element.getProductPrice());
                     } else {
@@ -80,7 +88,8 @@ public class Cart_implement implements Cart_service {
             newCart.setTotalPrice(totalAmount);
             return cart_modelRepository.save(newCart);
         } catch (Exception ex) {
-            throw new IllegalStateException("Lỗi !! Không tìm thấy người dùng có ID là " + newCart.getUserId().getId());
+            ex.printStackTrace();
+            throw new IllegalStateException("Lỗi !! Không tìm thấy giỏ hàng " + newCart.getUserId().getId());
         }
     }
 
@@ -90,7 +99,7 @@ public class Cart_implement implements Cart_service {
             cartModel cartExist = cartByUserId(userId);
             for (int i = 0; i < cartExist.getCartItem().size(); i++) {
                 final cartItem element = cartExist.getCartItem().get(i);
-                if (element.getProductItem().getId().equals(Long.valueOf(itemId))) {
+                if (element.getId().equals(Long.valueOf(itemId))) {
                     fields.forEach((key, value) -> {
                         Field field = ReflectionUtils.findField(cartItem.class, (String) key);
                         field.setAccessible(true);
@@ -120,7 +129,7 @@ public class Cart_implement implements Cart_service {
             if (inCartItem(cartModel)) {
 
                 List<cartItem> deletedItems = cartModel.getCartItem().stream()
-                        .filter(e -> itemId.contains(e.getProductItem().getId()))
+                        .filter(e -> itemId.contains(e.getId()))
                         .collect(Collectors.toList());
 
 
@@ -137,8 +146,9 @@ public class Cart_implement implements Cart_service {
                 }
 
                 cartModel.getCartItem().removeAll(deletedItems);
+                cart_modelRepository.save(cartModel);
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             throw new IllegalStateException(ex.getMessage());
         }
     }

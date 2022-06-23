@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public class Order_controller extends AbstractControllerOrder {
 
-    private Order_service service;
+    private final Order_service service;
 
     @PostMapping
     public ResponseEntity<Order_model> saveOrder(@RequestBody Order_model requestOrder) {

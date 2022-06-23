@@ -7,6 +7,7 @@ import com.student.project.amazone.entity.Product_model;
 
 import com.student.project.amazone.service.ServiceProduct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ ControllerProduct {
 
 
 
-	ServiceProduct serviceProduct;
+	private final ServiceProduct serviceProduct;
 
 	private FileStorageService fileStorageService;
 

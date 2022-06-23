@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class Order_implement implements Order_service {
 
-    public final Order_modelRepository modelRepository;
+    private final Order_modelRepository modelRepository;
 
 
     public Order_implement(Order_modelRepository modelRepository) {

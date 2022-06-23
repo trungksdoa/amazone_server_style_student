@@ -17,8 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:9111")
 public class Order_controller_mn extends AbstractControllerOrder {
-    @Autowired
-    private Order_service service;
+    private final Order_service service;
 
     @PostMapping
     public ResponseEntity<Order_model> saveOrder(@RequestBody Order_model requestOrder) {

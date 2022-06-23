@@ -29,41 +29,6 @@ public class Users_controller_mn {
         return ResponseEntity.ok().body(service.findAllUsers());
     }
 
-
-    @GetMapping("isAdmin")
-    public ResponseEntity<Boolean> checkIsAdmin(@RequestParam String name) {
-        Users_model usersModel = service.findUserByName(name);
-        if (usersModel != null) {
-            if (usersModel.isAdmin()) {
-                return ResponseEntity.ok().body(true);
-            }
-        }
-        return ResponseEntity.ok().body(false);
-    }
-
-    @PatchMapping("banUser")
-    public ResponseEntity<Boolean> bannedUser(@RequestParam String name) {
-        Users_model usersModel = service.findUserByName(name);
-        if (usersModel != null) {
-            usersModel.setBanned(true);
-            if (service.saveUser(usersModel).isBanned()){
-                return ResponseEntity.ok().body(true);
-            }
-        }
-        return ResponseEntity.ok().body(false);
-    }
-
-    @GetMapping("isDeleted")
-    public ResponseEntity<Boolean> checkIsDeleted(@RequestParam String name) {
-        Users_model usersModel = service.findUserByName(name);
-        if (usersModel != null) {
-            if (usersModel.isDeleted()) {
-                return ResponseEntity.ok().body(true);
-            }
-        }
-        return ResponseEntity.ok().body(false);
-    }
-
     @PostMapping("login")
     public ResponseEntity<Map<Object, Object>> loginUsers(@RequestBody Users_model user) {
         HttpStatus status = HttpStatus.OK;
@@ -78,21 +43,5 @@ public class Users_controller_mn {
         return ResponseEntity.status(status).body(respone);
     }
 
-    @PostMapping("save")
-    public ResponseEntity<Users_model> saveUser(@RequestBody Users_model user) {
-        service.saveUser(user);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/save").toUriString());
-        return ResponseEntity.created(uri).body(user);
-    }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<Users_model> UpdateUser(@PathVariable String id, @RequestBody Users_model user) {
-        if (service.findUserById(Long.valueOf(id)) != null) {
-            user.setId(Long.valueOf(id));
-            service.saveUser(service.findUserByName(user.getName()));
-        }
-
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/save").toUriString());
-        return ResponseEntity.created(uri).body(user);
-    }
 }

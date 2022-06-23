@@ -3,7 +3,6 @@ package com.student.project.amazone.controller;
 import com.student.project.amazone.entity.cartModel;
 import com.student.project.amazone.service.Cart_service;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,18 +15,28 @@ import static java.lang.Long.valueOf;
 
 @RestController
 @RequestMapping("/api/v1/cart")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
+@RequiredArgsConstructor
 public class Cart_controller {
 
-    private Cart_service service;
+    private final Cart_service service;
 
     Map<Object, Object> respone = new HashMap<>();
     cartModel cartData = new cartModel();
 
     @GetMapping
-    public ResponseEntity<cartModel> userMap(@RequestParam String userId) {
-        return ResponseEntity.ok().body(service.cartByUserId(Long.valueOf(userId)));
+    public ResponseEntity<Map<Object, Object>> userMap(@RequestParam String userId) {
+        HttpStatus status = HttpStatus.OK;
+        try {
+            cartData = service.cartByUserId(Long.parseLong(userId));
+            respone.put("cartData", cartData);
+            respone.put("isError", false);
+            respone.put("message", "Lấy thành công dữ liệu");
+        } catch (Exception ex) {
+            respone.put("isError", true);
+            respone.put("message", "Không tìm thấy giỏ hàng");
+        }
+        return ResponseEntity.status(status).body(respone);
     }
 
     @GetMapping("/All")
@@ -48,7 +57,7 @@ public class Cart_controller {
     }
 
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<Map<Object, Object>> add(@RequestBody cartModel requestCart) {
 
         String message = "Thêm thành công vào giỏ hàng";

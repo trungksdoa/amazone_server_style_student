@@ -17,7 +17,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class VietNamController {
 
-    private VietNam_service service;
+    private final VietNam_service service;
 
     @GetMapping
     public ResponseEntity<List<A_City>>getAllCity(){

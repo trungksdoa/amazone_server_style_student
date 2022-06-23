@@ -8,7 +8,9 @@ import java.util.List;
 public interface Users_service {
     Users_model isLoggedIn(Users_model usersModel);
     Users_model isLoggedInAdmin(Users_model usersModel);
-    Users_model saveUser(Users_model user);
+
+    Users_model updateOrSave(Users_model usersModel);
+    Users_model registerUser(Users_model usersModel);
     List<Users_model> findAllUsers();
     Users_model findUserById(Long id);
     Users_model findUserByName(String name);

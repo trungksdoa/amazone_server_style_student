@@ -17,8 +17,6 @@ public class AmazoneApplication  {
     @Bean
     public CommandLineRunner commandLineRunner() {
         return args -> {
-
-
         };
     }
 
